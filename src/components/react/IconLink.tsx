@@ -6,7 +6,7 @@ type LinkProps = {
     link: string;
     icon: string;
     handle: string;
-    withHandle: boolean;
+    withHandle?: boolean;
 }
 function IconLink({ title, link, icon, handle, withHandle }: LinkProps) {
     return (

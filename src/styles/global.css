@@ -40,31 +40,27 @@ body::before,
 body::after {
   content: '';
   position: fixed;
+	top: 0;
+  bottom: 0;
   z-index: -1; /* Place behind content */
   pointer-events: none; /* Allow clicking through */
 	opacity: 0.3;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+  background-size: contain;
+	background-position: 0 0;
 }
 
 body::before {
-  top: 10%;
   right: 0;
-  width: 30%;
   height: 613px;
   background-image: url('/4.png');
-  background-repeat: no-repeat;
-  background-size: contain;
-	background-position: 0 0;
 }
 
 body::after {
-  top: 30%;
   left: 0;
-	width: 30%;
   height: 574px;
   background-image: url('/3.png');
-  background-repeat: no-repeat;
-  background-size: contain;
-	background-position: 0 0;
 }
 
 main {
@@ -304,4 +300,10 @@ hr {
 		flex-direction: column;
 		text-align: center;
 	}
+}
+
+@media (prefers-reduced-motion) {
+  :root {
+    --scale: 0;
+  }
 }

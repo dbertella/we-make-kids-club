@@ -1,20 +1,20 @@
 ---
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
-import '../styles/global.css';
-import { ClientRouter } from 'astro:transitions';
-import '@fontsource/cherry-bomb-one';
-import '@fontsource/poppins';
+import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
+import "@fontsource/cherry-bomb-one";
+import "@fontsource/poppins";
 
 interface Props {
-	title: string;
-	description: string;
-	image?: string;
+  title: string;
+  description: string;
+  image?: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = '/aurelie.png' } = Astro.props;
+const { title, description, image = "/aurelie.png" } = Astro.props;
 ---
 
 <!-- Global Metadata -->
@@ -44,5 +44,21 @@ const { title, description, image = '/aurelie.png' } = Astro.props;
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9ZXTMEP7KZ"
+></script>
+<script is:inline>
+  (function (w, d, s, l, i) {
+    w[l] = w[l] || [];
+    w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+    var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s),
+      dl = l != "dataLayer" ? "&l=" + l : "";
+    j.async = true;
+    j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+    f.parentNode.insertBefore(j, f);
+  })(window, document, "script", "dataLayer", "G-9ZXTMEP7KZ");
+</script>
 
 <ClientRouter />
