@@ -7,7 +7,7 @@ import tinaDirective from "./astro-tina-directive/register"
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://example.com',
+	site: 'https://wemakekidsclub.com/',
 	integrations: [mdx(), sitemap(), react(), tinaDirective()],
 	redirects: {
 		'/admin': '/admin/index.html'
