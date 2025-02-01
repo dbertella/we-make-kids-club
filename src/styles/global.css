@@ -40,27 +40,26 @@ body::before,
 body::after {
   content: '';
   position: fixed;
-	top: 0;
+	top: 20%;
   bottom: 0;
   z-index: -1; /* Place behind content */
   pointer-events: none; /* Allow clicking through */
 	opacity: 0.3;
-	background-attachment: fixed;
 	background-repeat: no-repeat;
   background-size: contain;
-	background-position: 0 0;
+  height: 500;
 }
 
 body::before {
-  right: 0;
-  height: 613px;
+  right: 0;	
+	width: 35%;
   background-image: url('/4.png');
 }
 
 body::after {
   left: 0;
-  height: 574px;
-  background-image: url('/3.png');
+	width: 30%;
+	background-image: url('/3.png');
 }
 
 main {
