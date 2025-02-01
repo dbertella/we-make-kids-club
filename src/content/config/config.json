@@ -16,16 +16,16 @@
   ],
   "contactLinks": [
     {
-      "title": "Instagram",
-      "handle": "@wemakekidsclub",
-      "link": "https://www.instagram.com/wemakekidsclub/",
-      "icon": "TbBrandInstagram"
-    },
-    {
       "title": "Email",
       "handle": "@aurelie.lobster",
       "link": "mailto:aurelie.lobster@gmail.com",
       "icon": "TbMail"
+    },
+    {
+      "title": "Instagram",
+      "handle": "@wemakekidsclub",
+      "link": "https://www.instagram.com/wemakekidsclub/",
+      "icon": "TbBrandInstagram"
     }
   ]
 }
