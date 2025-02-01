@@ -5,12 +5,19 @@
  */
 
 :root {
-	--primary-blue: #242054;
-	--secondary-blue: #4b4bee;
-	--primary-yellow: #ffd84b;
+	--primary: #242054;
+	--secondary: #4b4bee;
+	--link: #fbb040;
 	--background-cream: #faf6f1;
 	--primary-font: "Poppins", serif;
 	--header-font: "Cherry Bomb One", serif;
+	--black: 15, 18, 25;
+	--gray: 96, 115, 159;
+	--gray-light: 229, 233, 240;
+	--gray-dark: 34, 41, 57;
+	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
+	--box-shadow: 0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
+		0 16px 32px rgba(var(--gray), 33%);
 }
 
 body {
@@ -92,7 +99,7 @@ h1 {
 	font-family: var(--header-font);
 	font-weight: 400;
   font-style: normal;
-	color: var(--secondary-blue);
+	color: var(--secondary);
 	text-align: center;
 }
 h2 {
@@ -112,10 +119,10 @@ b {
 	font-weight: 700;
 }
 a {
-	color: var(--accent);
+	color: var(--secondary);
 }
 a:hover {
-	color: var(--accent);
+	color: var(--black);
 }
 p {
 	margin-bottom: 1em;
@@ -151,7 +158,7 @@ pre > code {
 	all: unset;
 }
 blockquote {
-	border-left: 4px solid var(--accent);
+	border-left: 4px solid var(--secondary);
 	padding: 0 0 0 20px;
 	margin: 0px;
 	font-size: 1.333em;
@@ -187,13 +194,10 @@ hr {
 }
 .social-links a {
 	text-decoration: none;
-	color: rgb(var(--gray));
 	display: flex;
 	align-items: center;
 }
-.social-links a:hover {
-	color: rgb(var(--gray-dark));
-}
+
 .logo {
 	width: 150px;
 }
@@ -209,12 +213,12 @@ hr {
 .header-text {
 	text-align: center;
 	h1 {
-		color: var(--secondary-blue);
+		color: var(--secondary);
 		font-size: 3.6rem;
 		margin: 0;
 	}
 	h2 {
-		color: var(--primary-blue);
+		color: var(--primary);
 		font-size: 2rem;
 		margin: 0;
 	}
@@ -238,7 +242,7 @@ hr {
 		border-radius: 50%;
 	}
 	h3 {
-		color: var(--primary-blue);
+		color: var(--primary);
 		font-size: 1.5rem;
 		margin-top: 1rem;
 	}
@@ -253,21 +257,6 @@ hr {
 	grid-template-columns: 2fr 1fr;
 	gap: 4rem;
 	align-items: center;
-}
-
-.page-text {
-	p {
-		color: var(--primary-blue);
-		font-size: 1.1rem;
-		line-height: 1.6;
-		margin-bottom: 1.5rem;
-	}
-}
-
-.page-image {
-	position: relative;
-	height: 500px;
-	/* Add specific styling for the sliced image effect */
 }
 
 @media (max-width: 768px) {
