@@ -86,6 +86,11 @@ export const GlobalConfigCollection: Collection = {
           type: "string"
         },
         {
+          name: "handle",
+          label: "Handle",
+          type: "string"
+        },
+        {
           name: "link",
           label: "Link",
           type: "string"

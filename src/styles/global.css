@@ -39,21 +39,21 @@ body {
 body::before,
 body::after {
   content: '';
-  position: absolute;
+  position: fixed;
   z-index: -1; /* Place behind content */
   pointer-events: none; /* Allow clicking through */
+	opacity: 0.3;
 }
 
 body::before {
-  top: 20%;
+  top: 10%;
   right: 0;
   width: 30%;
   height: 613px;
   background-image: url('/4.png');
   background-repeat: no-repeat;
   background-size: contain;
-	background-position: 100% 0;
-	opacity: 0.5;
+	background-position: 0 0;
 }
 
 body::after {
@@ -65,7 +65,6 @@ body::after {
   background-repeat: no-repeat;
   background-size: contain;
 	background-position: 0 0;
-	opacity: 0.7;
 }
 
 main {
@@ -74,8 +73,8 @@ main {
 	margin: auto;
 	padding: 3em 1em;
 }
-article,
-.header {
+
+article {
 	width: 720px;
 	max-width: calc(100% - 2em);
 	margin: auto;
@@ -166,14 +165,6 @@ hr {
 	border: none;
 	border-top: 1px solid rgb(var(--gray-light));
 }
-@media (max-width: 720px) {
-	body {
-		font-size: 18px;
-	}
-	main {
-		padding: 1em;
-	}
-}
 
 .sr-only {
 	border: 0;
@@ -202,6 +193,8 @@ hr {
 .social-links a {
 	text-decoration: none;
 	color: rgb(var(--gray));
+	display: flex;
+	align-items: center;
 }
 .social-links a:hover {
 	color: rgb(var(--gray-dark));
@@ -215,20 +208,19 @@ hr {
 
 .header {
 	align-items: center;
-	gap: 2rem;
-	margin-bottom: 4rem;
+	padding: 3em 1rem 2em;
 }
 
 .header-text {
 	text-align: center;
 	h1 {
 		color: var(--secondary-blue);
-		font-size: 2.5rem;
+		font-size: 3.6rem;
 		margin: 0;
 	}
 	h2 {
 		color: var(--primary-blue);
-		font-size: 1.5rem;
+		font-size: 2rem;
 		margin: 0;
 	}
 }
@@ -238,7 +230,6 @@ hr {
 	grid-template-columns: repeat(3, 1fr);
 	gap: 2rem;
 	margin: auto;
-	margin-bottom: 4rem;
 	max-width: 1200px;
 }
 
@@ -284,8 +275,23 @@ hr {
 	/* Add specific styling for the sliced image effect */
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
+	body {
+		font-size: 18px;
+	}
+	main {
+		padding: 1em;
+	}
+	body::before {
+		top: 60%;
+		width: 50%;
+		background-position: 0 0;
+	}
+	
+	body::after {
+		width: 50%;
+	}
+
 	.activities {
 		grid-template-columns: 1fr;
 	}

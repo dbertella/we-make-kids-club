@@ -17,16 +17,19 @@
   "contactLinks": [
     {
       "title": "Instagram",
+      "handle": "@paintedbyaurelie",
       "link": "https://www.instagram.com/paintedbyaurelie/",
       "icon": "TbBrandInstagram"
     },
     {
       "title": "Etsy",
+      "handle": "@paintedbyaurelie",
       "link": "https://www.etsy.com/shop/paintedbyaurelie/?etsrc=sdt",
       "icon": "TbBrandEtsy"
     },
     {
       "title": "Email",
+      "handle": "@aurelie.lobster",
       "link": "mailto:aurelie.lobster@gmail.com",
       "icon": "TbMail"
     }
