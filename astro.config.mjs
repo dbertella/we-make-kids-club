@@ -7,9 +7,9 @@ import tinaDirective from "./astro-tina-directive/register"
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://wemakekidsclub.com/',
-	integrations: [mdx(), sitemap(), react(), tinaDirective()],
-	redirects: {
-		...process.env.TINA_PUBLIC_IS_LOCAL === 'true' ? {'/admin': '/admin/index.html'} : {}
-	}
+    site: 'https://wemakekidsclub.com/',
+    integrations: [mdx(), sitemap(), react(), tinaDirective()],
+    redirects: {
+        ...(process.env.TINA_PUBLIC_IS_LOCAL === 'true' ? {'/admin': '/admin/index.html'} : {})
+    }
 });
