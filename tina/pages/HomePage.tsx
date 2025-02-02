@@ -38,9 +38,18 @@ const HomePage = (props: Props) => {
 					</div>)}
 			</section>
 
-			<main data-tina-field={tinaField(page, "body")}>
-				<TinaMarkdown content={page.body} />
+			<main>
+				<section data-tina-field={tinaField(page, "body")}>
+					<TinaMarkdown content={page.body} />
+				</section>
+				<section data-tina-field={tinaField(page, "cta")} className="cta">
+					<a href={page.cta?.url} className="button">
+						{page.cta?.title}
+					</a>
+					<p className="disclaimer">{page.cta?.disclaimer}</p>
+				</section>
 			</main>
+
 
 		</>
 

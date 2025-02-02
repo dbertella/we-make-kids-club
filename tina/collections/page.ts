@@ -23,6 +23,30 @@ export const PageCollection: Collection = {
       required: true
     },
     {
+      label: "Call to action",
+      name: "cta",
+      type: "object",
+      fields: [
+        {
+          label: "Title",
+          name: "title",
+          type: "string",
+          required: true
+        },
+        {
+          label: "Url",
+          name: "url",
+          type: "string",
+          required: true
+        },
+        {
+          label: "Disclaimer",
+          name: "disclaimer",
+          type: "string",
+        },
+      ]
+    },
+    {
       label: 'Testimonial',
       name: 'testimonial',
       type: 'object',
