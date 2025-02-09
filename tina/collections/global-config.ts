@@ -33,7 +33,7 @@ export const GlobalConfigCollection: Collection = {
           required: true,
           type: "string",
           ui: {
-            defaultValue: "Your name here"
+            defaultValue: "Your name here",
           },
         },
         // Add more settings here...
@@ -47,7 +47,7 @@ export const GlobalConfigCollection: Collection = {
       ui: {
         itemProps: (item) => {
           return {
-            label: item.title
+            label: item.title,
           };
         },
       },
@@ -56,16 +56,15 @@ export const GlobalConfigCollection: Collection = {
           name: "title",
           label: "Title of Nav Item",
           type: "string",
-          required: true
+          required: true,
         },
         {
           name: "link",
           label: "Path of the Nav Item",
           type: "string",
-          required: true
-
-        }
-      ]
+          required: true,
+        },
+      ],
     },
     {
       name: "contactLinks",
@@ -75,25 +74,25 @@ export const GlobalConfigCollection: Collection = {
       ui: {
         itemProps: (item) => {
           return {
-            label: item.title
-          }
+            label: item.title,
+          };
         },
       },
       fields: [
         {
           name: "title",
           label: "Title",
-          type: "string"
+          type: "string",
         },
         {
           name: "handle",
           label: "Handle",
-          type: "string"
+          type: "string",
         },
         {
           name: "link",
           label: "Link",
-          type: "string"
+          type: "string",
         },
         {
           name: "icon",
@@ -101,12 +100,35 @@ export const GlobalConfigCollection: Collection = {
           type: "string",
           ui: {
             //@ts-ignore
-            component: IconComponent
-          }
-        }
+            component: IconComponent,
+          },
+        },
       ],
-    }
-
+    },
     // Add other config fields here...
-  ]
-}
+    {
+      name: "formCta",
+      label: "Sign in form button",
+      type: "string",
+      required: true,
+    },
+    {
+      name: "mailFrom",
+      label: "Email from",
+      type: "string",
+      required: true,
+    },
+    {
+      name: "mailTo",
+      label: "Email to",
+      type: "string",
+      required: true,
+    },
+    {
+      name: "mailSubject",
+      label: "Email subject for subscription",
+      type: "string",
+      required: true,
+    },
+  ],
+};

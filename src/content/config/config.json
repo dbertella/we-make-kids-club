@@ -27,5 +27,9 @@
       "link": "https://www.instagram.com/wemakekidsclub/",
       "icon": "TbBrandInstagram"
     }
-  ]
+  ],
+  "formCta": "I'm in!",
+  "mailFrom": "no-reply@wemakekidsclub.com",
+  "mailTo": "wemakekidsclub@gmail.com",
+  "mailSubject": "[wemakekidsclub.com] New subscription"
 }

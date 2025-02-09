@@ -18,22 +18,13 @@ const TinaPage = (props: Props) => {
 	const page = data.page;
 
 	return (
-		<main className="page-container">
+		<main>
 			<h1 data-tina-field={tinaField(page, "seoTitle")}>{page.seoTitle}</h1>
-			<section className="page-content">
+			<section>
 
 				<div data-tina-field={tinaField(page, "body")}>
 					<TinaMarkdown content={page.body} />
 				</div>
-				<section data-tina-field={tinaField(page, "testimonial")}>
-				{page.testimonial?.map((testimonial) =>
-					<div
-						key={`${testimonial?.title}`}
-					>
-						<div data-tina-field={tinaField(testimonial, "imgSrc")}></div>
-						{testimonial?.imgSrc && <img src={testimonial.imgSrc} alt={`${testimonial.title}`} />}
-					</div>)}
-			</section>
 			</section>
 		</main>
 	)

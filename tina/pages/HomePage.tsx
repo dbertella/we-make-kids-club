@@ -49,8 +49,6 @@ const HomePage = (props: Props) => {
 					<p className="disclaimer">{page.cta?.disclaimer}</p>
 				</section>
 			</main>
-
-
 		</>
 
 	)

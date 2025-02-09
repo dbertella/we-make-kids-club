@@ -1,0 +1,100 @@
+---
+import config from "../content/config/config.json";
+import Checkbox from "./Checkbox.astro";
+
+const options = [
+  "Little hands (2-4yo)",
+  "Mini maker (5-7yo)",
+  "Young creatives (8-11yo)",
+];
+---
+
+<section class="subscription-form">
+  <form action="/actions/send-email" method="post">
+    <div>
+      <label for="send-email__name">Name</label>
+      <input type="text" name="name" id="send-email__name" required />
+    </div>
+    <div>
+      <label for="send-email__recipient">Email</label>
+      <input
+        type="email"
+        name="recipient"
+        id="send-email__recipient"
+        required
+      />
+    </div>
+    <div>
+      <fieldset>
+        <legend>Select the workshop(s) you are interested in</legend>
+        {
+          options.map((option) => (
+            <Checkbox label={option} name="selectedWorkshops" value={option} />
+          ))
+        }
+      </fieldset>
+    </div>
+    <section class="cta">
+      <input type="submit" value={config.formCta} class="button" />
+    </section>
+  </form>
+</section>
+
+<style>
+  form {
+    max-width: 500px;
+    margin: 0 auto 3rem;
+    padding: 2rem;
+    border-radius: 5px;
+    background-color: rgba(var(--yellow), 0.1);
+    border: 3px solid rgb(var(--yellow));
+  }
+
+  label {
+    display: block;
+    color: rgb(var(--orange));
+    font-weight: bold;
+    font-size: 0.9rem;
+  }
+
+  input[type="email"],
+  input[type="text"],
+  textarea,
+  fieldset {
+    width: calc(100% - 2rem);
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border: 2px solid rgb(var(--yellow));
+    border-radius: 5px;
+  }
+
+  textarea {
+    height: 100px;
+    resize: vertical;
+  }
+
+  fieldset {
+    background-color: rgba(var(--yellow), 0.05);
+  }
+
+  legend {
+    color: rgb(var(--orange));
+    font-weight: bold;
+    padding: 0 1rem;
+    border-radius: 5px;
+    font-size: 0.9rem;
+  }
+
+  .subscription-form .button{
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  .subscription-form:has(input:checked) .button {
+    pointer-events: auto;
+    opacity: 1;
+    cursor: pointer;
+  }
+  
+</style>
