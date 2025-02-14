@@ -1,6 +1,5 @@
 import type { APIRoute } from "astro";
 import { sendEmail } from "../../utils/emails";
-import config from "../../content/config/config.json";
 
 export const prerender = false;
 
@@ -27,8 +26,8 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     <div>Email: ${email}</div>
     <div>${message}</div>`;
     await sendEmail({
-      to: config.mailTo,
-      subject: config.mailSubject,
+      to: "wemakekidsclub@gmail.com",
+      subject: "[wemakekidsclub.com] New subscription",
       html,
     });
   } catch (error) {
