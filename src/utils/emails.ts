@@ -9,7 +9,9 @@ type SendEmailOptions = {
   html: string;
 };
 
-export async function sendEmail(options: SendEmailOptions): Promise<Transporter> {
+export async function sendEmail(
+  options: SendEmailOptions
+): Promise<Transporter> {
   const transporter = await getEmailTransporter();
   return new Promise(async (resolve, reject) => {
     // Build the email message
