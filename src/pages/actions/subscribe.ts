@@ -106,5 +106,11 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     throw new Error("Failed to send customer email");
   }
 
-  return redirect("/success");
+  return new Response(
+    JSON.stringify({
+      message: "Success!",
+      redirect: "/success",
+    }),
+    { status: 200 }
+  );
 };

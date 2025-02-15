@@ -10,7 +10,7 @@ const options = [
 ---
 
 <section class="subscription-form">
-  <form action="/actions/send-email" method="post">
+  <form action="/actions/subscribe" method="post" id="contact-form">
     <div>
       <label for="send-email__name">Name</label>
       <input type="text" name="name" id="send-email__name" required />
@@ -35,10 +35,69 @@ const options = [
       </fieldset>
     </div>
     <section class="cta">
-      <input type="submit" value={config.formCta} class="button" />
+      <button type="submit" class="button">
+        <svg class="spinner hidden" width="20" height="20" viewBox="0 0 24 24">
+          <circle
+            class="spinner-circle"
+            cx="12"
+            cy="12"
+            r="10"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-dasharray="30 60"></circle>
+        </svg>
+        <span class="button-text">{config.formCta}</span>
+      </button>
     </section>
   </form>
 </section>
+
+<script>
+  const form = document.getElementById("contact-form") as HTMLFormElement;
+  const submitButton = form.querySelector(
+    'button[type="submit"]'
+  ) as HTMLButtonElement;
+  const loadingSpinner = submitButton.querySelector(".spinner") as HTMLElement;
+
+  const setLoading = (isLoading: boolean) => {
+    submitButton.disabled = isLoading;
+    loadingSpinner.classList.toggle("hidden", !isLoading);
+  };
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    setLoading(true);
+
+    try {
+      const response = await fetch("/actions/subscribe", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result.redirect) {
+        window.location.href = result.redirect;
+      } else {
+        window.location.href = "/success";
+      }
+
+      form.reset();
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  });
+</script>
 
 <style>
   form {
@@ -85,7 +144,7 @@ const options = [
     font-size: 0.9rem;
   }
 
-  .subscription-form .button{
+  .subscription-form .button {
     opacity: 0.5;
     pointer-events: none;
     cursor: not-allowed;
@@ -96,5 +155,23 @@ const options = [
     opacity: 1;
     cursor: pointer;
   }
-  
+
+  .spinner {
+    margin-right: 0.5rem;
+  }
+
+  .spinner-circle {
+    transform-origin: center;
+    animation: rotate 1s linear infinite;
+  }
+
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .hidden {
+    display: none;
+  }
 </style>
