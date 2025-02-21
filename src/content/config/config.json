@@ -6,6 +6,10 @@
   },
   "nav": [
     {
+      "title": "Events",
+      "link": "/events"
+    },
+    {
       "title": "Home",
       "link": "/"
     },
