@@ -6,16 +6,16 @@
   },
   "nav": [
     {
-      "title": "Events",
-      "link": "/events"
-    },
-    {
       "title": "Home",
       "link": "/"
     },
     {
       "title": "About",
       "link": "/about"
+    },
+    {
+      "title": "Events",
+      "link": "/events"
     }
   ],
   "contactLinks": [
