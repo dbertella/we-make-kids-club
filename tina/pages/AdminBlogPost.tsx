@@ -30,13 +30,13 @@ export default function AdminEventsPost(props: Props) {
 				<div className="title">
 					<div className="date" data-tina-field={tinaField(events, "pubDate")} >
 						<FormattedDate date={`${events.pubDate}`} />
-						{
+						{/* {
 							events.updatedDate && (
 								<div className="last-updated-on" data-tina-field={tinaField(events, "updatedDate")} >
 									Last updated on <FormattedDate date={events.updatedDate} />
 								</div>
 							)
-						}
+						} */}
 					</div>
 					<h1 data-tina-field={tinaField(events, "title")} >{events.title}</h1>
 					<hr />

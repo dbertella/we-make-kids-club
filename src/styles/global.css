@@ -87,7 +87,6 @@ article {
   width: 720px;
   max-width: calc(100% - 2em);
   margin: auto;
-  padding: 3rem 1rem;
 }
 
 h1,
@@ -296,6 +295,14 @@ hr {
   margin-top: 8px;
   font-style: italic;
   font-size: 1rem;
+}
+
+.date {
+  font-size: 1rem;
+  text-align: center;
+  margin-top: 1.5rem;
+  margin-bottom: -2rem;
+  color: rgb(var(--gray));
 }
 
 @media (max-width: 768px) {
