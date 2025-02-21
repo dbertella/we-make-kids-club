@@ -85,7 +85,7 @@ main {
 
 article {
   width: 720px;
-  max-width: calc(100% - 2em);
+  max-width: 100%;
   margin: auto;
 }
 
