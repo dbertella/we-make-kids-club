@@ -314,6 +314,10 @@ hr {
   color: rgb(var(--gray));
 }
 
+.gray-dark {
+  color: rgb(var(--gray-dark));
+}
+
 @media (max-width: 768px) {
   body {
     font-size: 18px;
