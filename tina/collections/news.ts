@@ -25,6 +25,11 @@ export const EventCollection: Collection = {
       type: "string",
     },
     {
+      name: "category",
+      label: "Category",
+      type: "string",
+    },
+    {
       name: "pubDate",
       label: "Publication Date",
       type: "datetime",

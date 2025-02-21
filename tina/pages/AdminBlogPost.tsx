@@ -28,7 +28,9 @@ export default function AdminNewsPost(props: Props) {
 			</div>
 			<div className="prose">
 				<div className="title">
-					<div className="date" data-tina-field={tinaField(news, "pubDate")} >
+					<div className="date" data-tina-field={tinaField(news, "pubDate")}>
+						<strong>{news.category}</strong>
+						{' • '}
 						<FormattedDate date={`${news.pubDate}`} />
 						{/* {
 							news.updatedDate && (
