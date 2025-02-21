@@ -1,17 +1,17 @@
 import React from 'react';
 import { tinaField, useTina } from "tinacms/dist/react";
-import type { EventsQuery, EventsQueryVariables } from '../__generated__/types';
+import type { NewsQuery, NewsQueryVariables } from '../__generated__/types';
 import { TinaMarkdown } from 'tinacms/dist/rich-text'
 import FormattedDate from '../../src/components/react/FormattedDate.tsx';
 
 
 type Props = {
-	variables: EventsQueryVariables;
-	data: EventsQuery;
+	variables: NewsQueryVariables;
+	data: NewsQuery;
 	query: string;
 }
 
-export default function AdminEventsPost(props: Props) {
+export default function AdminNewsPost(props: Props) {
 
 	const { data } = useTina({
 		query: props.query,
@@ -19,30 +19,30 @@ export default function AdminEventsPost(props: Props) {
 		data: props.data,
 	})
 
-	const events = data.events;
+	const news = data.news;
 
 	return (
 		<article>
-			<div data-tina-field={tinaField(events, "heroImage")} className="hero-image">
-				{events.heroImage && <img width={1020} height={510} src={events.heroImage} alt="" />}
+			<div data-tina-field={tinaField(news, "heroImage")} className="hero-image">
+				{news.heroImage && <img width={1020} height={510} src={news.heroImage} alt="" />}
 			</div>
 			<div className="prose">
 				<div className="title">
-					<div className="date" data-tina-field={tinaField(events, "pubDate")} >
-						<FormattedDate date={`${events.pubDate}`} />
+					<div className="date" data-tina-field={tinaField(news, "pubDate")} >
+						<FormattedDate date={`${news.pubDate}`} />
 						{/* {
-							events.updatedDate && (
-								<div className="last-updated-on" data-tina-field={tinaField(events, "updatedDate")} >
-									Last updated on <FormattedDate date={events.updatedDate} />
+							news.updatedDate && (
+								<div className="last-updated-on" data-tina-field={tinaField(news, "updatedDate")} >
+									Last updated on <FormattedDate date={news.updatedDate} />
 								</div>
 							)
 						} */}
 					</div>
-					<h1 data-tina-field={tinaField(events, "title")} >{events.title}</h1>
+					<h1 data-tina-field={tinaField(news, "title")} >{news.title}</h1>
 					<hr />
 				</div>
-				<div data-tina-field={tinaField(events, "body")}>
-					<TinaMarkdown content={events.body} />
+				<div data-tina-field={tinaField(news, "body")}>
+					<TinaMarkdown content={news.body} />
 				</div>
 			</div>
 		</article>

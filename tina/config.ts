@@ -1,5 +1,5 @@
 import { defineConfig } from "tinacms";
-import { EventCollection } from "./collections/events";
+import { EventCollection } from "./collections/news";
 import { GlobalConfigCollection } from "./collections/global-config";
 import { PageCollection } from "./collections/page";
 

@@ -2,13 +2,13 @@ import type { Collection } from "tinacms";
 
 export const EventCollection: Collection = {
 
-  name: "events",
-  label: "Events",
-  path: "src/content/events",
+  name: "news",
+  label: "News",
+  path: "src/content/news",
   format: "mdx",
   ui: {
     router({ document }) {
-      return `/events/${document._sys.filename}`;
+      return `/news/${document._sys.filename}`;
     },
   },
   fields: [

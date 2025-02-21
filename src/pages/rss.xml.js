@@ -3,14 +3,14 @@ import { getCollection } from 'astro:content';
 import config from '../content/config/config.json'
 
 export async function GET(context) {
-	const posts = await getCollection('events');
+	const posts = await getCollection('news');
 	return rss({
 		title: config.seo.title,
 		description: config.seo.description,
 		site: context.site,
 		items: posts.map((post) => ({
 			...post.data,
-			link: `/events/${post.id}/`,
+			link: `/news/${post.id}/`,
 		})),
 	});
 }
