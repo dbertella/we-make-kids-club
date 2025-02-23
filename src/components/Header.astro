@@ -11,22 +11,61 @@ import IconLink from "./react/IconLink";
         <img class="logo" src="/logo.svg" alt="We Make Kids Club Logo" />
       </a>
     </h2>
-    <div class="internal-links">
-      {
-        config.nav.map((nav) => (
-          <HeaderLink href={nav.link}>{nav.title}</HeaderLink>
-        ))
-      }
-    </div>
-    <div class="social-links">
-      {
-        config?.contactLinks?.map((link) => {
-          return <IconLink {...link} />;
-        })
-      }
+    <button id="menu" aria-label="Open Menu" class="burger">
+      <svg
+        width="32px"
+        height="32px"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M4 5C3.44772 5 3 5.44772 3 6C3 6.55228 3.44772 7 4 7H20C20.5523 7 21 6.55228 21 6C21 5.44772 20.5523 5 20 5H4ZM7 12C7 11.4477 7.44772 11 8 11H20C20.5523 11 21 11.4477 21 12C21 12.5523 20.5523 13 20 13H8C7.44772 13 7 12.5523 7 12ZM13 18C13 17.4477 13.4477 17 14 17H20C20.5523 17 21 17.4477 21 18C21 18.5523 20.5523 19 20 19H14C13.4477 19 13 18.5523 13 18Z"
+          fill="currentColor"></path>
+      </svg>
+    </button>
+    <div class="navbar">
+      <button id="menu-close" aria-label="Close Menu" class="burger top-right">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="54px"
+          height="54px"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M6.99486 7.00636C6.60433 7.39689 6.60433 8.03005 6.99486 8.42058L10.58 12.0057L6.99486 15.5909C6.60433 15.9814 6.60433 16.6146 6.99486 17.0051C7.38538 17.3956 8.01855 17.3956 8.40907 17.0051L11.9942 13.4199L15.5794 17.0051C15.9699 17.3956 16.6031 17.3956 16.9936 17.0051C17.3841 16.6146 17.3841 15.9814 16.9936 15.5909L13.4084 12.0057L16.9936 8.42059C17.3841 8.03007 17.3841 7.3969 16.9936 7.00638C16.603 6.61585 15.9699 6.61585 15.5794 7.00638L11.9942 10.5915L8.40907 7.00636C8.01855 6.61584 7.38538 6.61584 6.99486 7.00636Z"
+            fill="currentColor"></path>
+        </svg>
+      </button>
+      <div class="internal-links">
+        {
+          config.nav.map((nav) => (
+            <HeaderLink href={nav.link}>{nav.title}</HeaderLink>
+          ))
+        }
+      </div>
+      <div class="social-links">
+        {
+          config?.contactLinks?.map((link) => {
+            return <IconLink {...link} />;
+          })
+        }
+      </div>
     </div>
   </nav>
 </header>
+
+<script is:inline>
+  document.addEventListener("astro:page-load", () => {
+    document.getElementById("menu")?.addEventListener("click", () => {
+      document.querySelector(".navbar")?.classList?.add("show");
+    });
+    document.getElementById("menu-close")?.addEventListener("click", () => {
+      document.querySelector(".navbar")?.classList?.remove("show");
+    });
+  });
+</script>
 <style>
   header {
     margin: 0;
@@ -58,10 +97,58 @@ import IconLink from "./react/IconLink";
     text-decoration: none;
     border-bottom-color: var(--secondary);
   }
-  
+
+  .navbar {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .burger {
+    display: none;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: var(--secondary);
+  }
+
+  .top-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
   @media (max-width: 720px) {
-    .social-links {
+    .burger {
+      display: block;
+    }
+    .navbar {
       display: none;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      width: 320px;
+      flex-direction: column;
+      background-color: var(--background-cream);
+      box-shadow: var(--box-shadow);
+      &.show {
+        display: flex;
+      }
+    }
+    .social-links {
+      padding: 3rem 0;
+    }
+    .internal-links {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex: 1;
+    }
+    nav a {
+      font-size: 1.5rem;
+    }
+    nav a.active {
+      border-bottom: 4px solid transparent;
     }
   }
 </style>
