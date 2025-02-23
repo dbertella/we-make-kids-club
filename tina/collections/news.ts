@@ -1,7 +1,6 @@
 import type { Collection } from "tinacms";
 
 export const EventCollection: Collection = {
-
   name: "news",
   label: "News",
   path: "src/content/news",
@@ -49,6 +48,24 @@ export const EventCollection: Collection = {
       name: "body",
       label: "Body",
       isBody: true,
+      templates: [
+        {
+          name: "ButtonComponent",
+          label: "Button",
+          fields: [
+            {
+              name: "url",
+              label: "Url",
+              type: "string",
+            },
+            {
+              name: "label",
+              label: "Button Text",
+              type: "string",
+            },
+          ],
+        },
+      ],
     },
   ],
-}
+};

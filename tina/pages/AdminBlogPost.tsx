@@ -3,7 +3,11 @@ import { tinaField, useTina } from "tinacms/dist/react";
 import type { NewsQuery, NewsQueryVariables } from '../__generated__/types';
 import { TinaMarkdown } from 'tinacms/dist/rich-text'
 import FormattedDate from '../../src/components/react/FormattedDate.tsx';
+import ButtonComponent from '../components/ButtonComponent.tsx';
 
+const components = {
+	ButtonComponent
+}
 
 type Props = {
 	variables: NewsQueryVariables;
@@ -44,7 +48,7 @@ export default function AdminNewsPost(props: Props) {
 					<hr />
 				</div>
 				<div data-tina-field={tinaField(news, "body")}>
-					<TinaMarkdown content={news.body} />
+					<TinaMarkdown content={news.body} components={components} />
 				</div>
 			</div>
 		</article>
