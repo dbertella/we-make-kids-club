@@ -4,14 +4,14 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 
-type Props = CollectionEntry<"news">["data"];
+type Props = { data: { news: CollectionEntry<"news">["data"] } };
 
-const { title, description } = Astro.props;
+const { title, description, heroImage } = Astro.props.data.news;
 ---
 
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} />
+    <BaseHead title={title} description={description} image={heroImage} />
   </head>
 
   <body>

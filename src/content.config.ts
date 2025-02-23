@@ -30,7 +30,7 @@ const news = defineCollection({
     category: z.string(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
-    heroImage: z.string().nullish(),
+    heroImage: z.string().optional(),
   }),
 });
 
