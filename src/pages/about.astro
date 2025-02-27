@@ -11,7 +11,7 @@ const data = await client.queries.page({ relativePath: "about.mdx" });
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={config.seo.title} description={config.seo.description} />
+    <BaseHead title={data.data.page.seoTitle} description={data.data.page.seoDescription} />
   </head>
   <body>
     <Header />

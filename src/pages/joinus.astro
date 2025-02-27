@@ -6,13 +6,17 @@ import Page from "../../tina/pages/Page";
 import config from "../content/config/config.json";
 import client from "../../tina/__generated__/client";
 import Form from "../components/Form.astro";
+
 const data = await client.queries.page({ relativePath: "joinus.mdx" });
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={config.seo.title} description={config.seo.description} />
+    <BaseHead
+      title={data.data.page.seoTitle}
+      description={data.data.page.seoDescription ?? config.seo.description}
+    />
   </head>
   <body>
     <Header />

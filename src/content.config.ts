@@ -59,6 +59,7 @@ const page = defineCollection({
       relativePath: z.string(),
     }),
     seoTitle: z.string(),
+    seoDescription: z.string(),
     body: z.any(),
   }),
 })

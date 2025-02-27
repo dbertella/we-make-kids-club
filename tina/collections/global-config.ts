@@ -36,6 +36,18 @@ export const GlobalConfigCollection: Collection = {
             defaultValue: "Your name here",
           },
         },
+        {
+          name: "newsTitle",
+          label: "News page title for SEO",
+          type: "string",
+          required: true,
+        },
+        {
+          name: "newsDescription",
+          label: "News page description for SEO",
+          type: "string",
+          required: true,
+        },
         // Add more settings here...
       ],
     },
