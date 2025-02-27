@@ -17,6 +17,16 @@ export const PageCollection: Collection = {
       required: true
     },
     {
+      name: "seoDescription",
+      type: "string",
+      required: true
+    },
+    {
+      name: "title",
+      type: "string",
+      required: true
+    },
+    {
       name: "body",
       type: "rich-text",
       isBody: true,

@@ -19,6 +19,11 @@ export const EventCollection: Collection = {
       required: true,
     },
     {
+      name: "seoTitle",
+      label: "SEO title",
+      type: "string",
+    },
+    {
       name: "description",
       label: "Description",
       type: "string",

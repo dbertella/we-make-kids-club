@@ -3,7 +3,6 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import Page from "../../tina/pages/Page";
-import config from "../content/config/config.json";
 import client from "../../tina/__generated__/client";
 const data = await client.queries.page({ relativePath: "about.mdx" });
 ---

@@ -19,7 +19,7 @@ const TinaPage = (props: Props) => {
 
 	return (
 		<main>
-			<h1 data-tina-field={tinaField(page, "seoTitle")}>{page.seoTitle}</h1>
+			<h1 data-tina-field={tinaField(page, "title")}>{page.title}</h1>
 			<section>
 
 				<div data-tina-field={tinaField(page, "body")}>
