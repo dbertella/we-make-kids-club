@@ -25,6 +25,8 @@ const news = defineCollection({
       path: z.string(),
       relativePath: z.string(),
     }),
+    seoTitle: z.string().optional(),
+    seoDescription: z.string().optional(),
     title: z.string(),
     description: z.string(),
     category: z.string(),

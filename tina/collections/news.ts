@@ -12,16 +12,21 @@ export const EventCollection: Collection = {
   },
   fields: [
     {
+      name: "seoTitle",
+      label: "SEO title",
+      type: "string",
+    },
+    {
+      name: "seoDescription",
+      label: "SEO description",
+      type: "string",
+    },
+    {
       type: "string",
       name: "title",
       label: "Title",
       isTitle: true,
       required: true,
-    },
-    {
-      name: "seoTitle",
-      label: "SEO title",
-      type: "string",
     },
     {
       name: "description",
