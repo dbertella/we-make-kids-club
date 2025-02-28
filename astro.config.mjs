@@ -37,7 +37,9 @@ export default defineConfig({
         necessary: {
           readOnly: true,
         },
-        analytics: {},
+        analytics: {
+          enabled: true,
+        },
       },
       language: {
         default: "en",
