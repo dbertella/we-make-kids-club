@@ -5,30 +5,27 @@ const today = new Date();
 ---
 
 <footer>
-	&copy; {today.getFullYear()}
-	{config.seo.siteOwner}. All rights reserved.
-	<div class="social-links">
-		{
-			config?.contactLinks?.map((link) => {
-				return (
-					<IconLink {...link} withHandle />
-				);
-			})
-		}
-	</div>
+  &copy; {today.getFullYear()}
+  {config.seo.siteOwner}. All rights reserved.
+  <div class="social-links">
+    {
+      config?.contactLinks?.map((link) => {
+        return <IconLink {...link} withHandle />;
+      })
+    }
+  </div>
 </footer>
 <style>
-	footer {
-		padding: 2em 1em 6em 1em;
-		background: rgb(var(--yellow)) no-repeat;
-		text-align: center;
-	}
-	.social-links {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		gap: 1em;
-		margin-top: 1em;
-	}
-
+  footer {
+    padding: 2em 1em 6em 1em;
+    background: rgb(var(--yellow)) no-repeat;
+    text-align: center;
+  }
+  .social-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em;
+    margin-top: 1em;
+  }
 </style>

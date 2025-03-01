@@ -19,6 +19,7 @@ export default defineConfig({
     react(),
     tinaDirective(),
     cookieconsent({
+      disablePageInteraction: true,
       guiOptions: {
         consentModal: {
           layout: "box",

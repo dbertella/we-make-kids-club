@@ -361,3 +361,7 @@ hr {
     --scale: 0;
   }
 }
+
+.cm__btn[data-role="necessary"] {
+  display: none !important;
+}
