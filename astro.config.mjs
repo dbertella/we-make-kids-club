@@ -4,6 +4,7 @@ import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import react from "@astrojs/react";
 import tinaDirective from "./astro-tina-directive/register";
+import partytown from "@astrojs/partytown";
 
 import cookieconsent from "@jop-software/astro-cookieconsent";
 
@@ -92,6 +93,11 @@ export default defineConfig({
             },
           },
         },
+      },
+    }),
+    partytown({
+      config: {
+        forward: ["dataLayer.push"],
       },
     }),
   ],
