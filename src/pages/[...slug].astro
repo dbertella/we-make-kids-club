@@ -7,16 +7,16 @@ import Header from "../components/Header.astro";
 import BaseHead from "../components/BaseHead.astro";
 
 export async function getStaticPaths() {
-	const page = await getCollection("page");
-	return page.map((p) => ({
-		params: { slug: p.id },
-		props: {
-			getTinaProps: async () =>
-				client.queries.page({
-					relativePath: p.data.tinaInfo.relativePath,
-				}),
-		},
-	}));
+  const page = await getCollection("page");
+  return page.map((p) => ({
+    params: { slug: p.id },
+    props: {
+      getTinaProps: async () =>
+        client.queries.page({
+          relativePath: p.data.tinaInfo.relativePath,
+        }),
+    },
+  }));
 }
 
 const { getTinaProps } = Astro.props;
@@ -25,37 +25,15 @@ const data = await getTinaProps();
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title={data.data.page.seoTitle} description={data.data.page.seoDescription} />
-
-    <script
-      is:inline
-      type="text/partytown"
-      src="https://www.googletagmanager.com/gtag/js?id=G-9ZXTMEP7KZ"></script>
-
-    <script is:inline type="text/partytown">
-      document.addEventListener("astro:page-load", () => {
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-          dataLayer.push(arguments);
-        }
-        gtag("js", new Date());
-
-        gtag("consent", "default", {
-          ad_storage: "denied",
-          ad_user_data: "denied",
-          ad_personalization: "denied",
-          analytics_storage: "denied",
-        });
-
-        gtag("config", "G-9ZXTMEP7KZ");
-      });
-    </script>
-	</head>
-	<body>
-		<Header />
-				<Page {...data} client:tina />
-		<Footer />
-	</body>
+  <head>
+    <BaseHead
+      title={data.data.page.seoTitle}
+      description={data.data.page.seoDescription}
+    />
+  </head>
+  <body>
+    <Header />
+    <Page {...data} client:tina />
+    <Footer />
+  </body>
 </html>
-

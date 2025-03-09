@@ -16,29 +16,6 @@ const posts = (await getCollection("news")).sort(
   <head>
     <BaseHead title={config.seo.title} description={config.seo.description} />
 
-    <script
-      is:inline
-      type="text/partytown"
-      src="https://www.googletagmanager.com/gtag/js?id=G-9ZXTMEP7KZ"></script>
-
-    <script is:inline type="text/partytown">
-      document.addEventListener("astro:page-load", () => {
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-          dataLayer.push(arguments);
-        }
-        gtag("js", new Date());
-
-        gtag("consent", "default", {
-          ad_storage: "denied",
-          ad_user_data: "denied",
-          ad_personalization: "denied",
-          analytics_storage: "denied",
-        });
-
-        gtag("config", "G-9ZXTMEP7KZ");
-      });
-    </script>
     <style>
       main {
         width: 960px;
@@ -87,8 +64,7 @@ const posts = (await getCollection("news")).sort(
         color: rgb(var(--gray));
       }
       ul li a:hover .title,
-      ul li a:hover .date
-       {
+      ul li a:hover .date {
         color: rgb(var(--secondary));
       }
       ul a:hover img {
