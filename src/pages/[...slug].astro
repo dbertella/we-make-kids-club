@@ -27,6 +27,30 @@ const data = await getTinaProps();
 <html lang="en">
 	<head>
 		<BaseHead title={data.data.page.seoTitle} description={data.data.page.seoDescription} />
+
+    <script
+      is:inline
+      type="text/partytown"
+      src="https://www.googletagmanager.com/gtag/js?id=G-9ZXTMEP7KZ"></script>
+
+    <script is:inline type="text/partytown">
+      document.addEventListener("astro:page-load", () => {
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+
+        gtag("consent", "default", {
+          ad_storage: "denied",
+          ad_user_data: "denied",
+          ad_personalization: "denied",
+          analytics_storage: "denied",
+        });
+
+        gtag("config", "G-9ZXTMEP7KZ");
+      });
+    </script>
 	</head>
 	<body>
 		<Header />

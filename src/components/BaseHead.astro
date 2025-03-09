@@ -45,27 +45,4 @@ const { title, description, image = "/wemakekidsclub.png" } = Astro.props;
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
-<script
-  is:inline
-  type="text/partytown"
-  src="https://www.googletagmanager.com/gtag/js?id=G-9ZXTMEP7KZ"
-></script>
-
-<script is:inline type="text/partytown">
-  window.dataLayer = window.dataLayer || [];
-  function gtag() {
-    dataLayer.push(arguments);
-  }
-  gtag("js", new Date());
-
-  gtag("consent", "default", {
-      ad_storage: "denied",
-      ad_user_data: "denied",
-      ad_personalization: "denied",
-      analytics_storage: "denied",
-  });
-
-  gtag("config", "G-9ZXTMEP7KZ");
-</script>
-
 <ClientRouter />
