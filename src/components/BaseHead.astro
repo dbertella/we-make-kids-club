@@ -17,13 +17,36 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const { title, description, image = "/wemakekidsclub.png" } = Astro.props;
 ---
 
-<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-9ZXTMEP7KZ"></script>
+<script
+  is:inline
+  async
+  src="https://www.googletagmanager.com/gtag/js?id=G-9ZXTMEP7KZ"></script>
 <script is:inline>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
 
-  gtag('config', 'G-9ZXTMEP7KZ');
+  gtag("consent", "default", {
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+    analytics_storage: "denied",
+  });
+
+  gtag("config", "G-9ZXTMEP7KZ");
+</script>
+
+<script is:inline data-category="analytics">
+  function updateConsents() {
+    gtag("consent", "update", {
+      ad_storage: "granted",
+      ad_user_data: "granted",
+      ad_personalization: "granted",
+      analytics_storage: "granted",
+    });
+  }
 </script>
 
 <!-- Global Metadata -->
