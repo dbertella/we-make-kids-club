@@ -38,9 +38,7 @@ export default defineConfig({
         necessary: {
           readOnly: true,
         },
-        analytics: {
-          enabled: true,
-        },
+        analytics: {},
       },
       language: {
         default: "en",
@@ -97,6 +95,7 @@ export default defineConfig({
   ],
 
   redirects: {
+    "/home": "/",
     ...(process.env.TINA_PUBLIC_IS_LOCAL === "true"
       ? { "/admin": "/admin/index.html" }
       : {}),

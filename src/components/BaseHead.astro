@@ -39,14 +39,17 @@ const { title, description, image = "/wemakekidsclub.png" } = Astro.props;
 </script>
 
 <script is:inline data-category="analytics">
-  (function updateConsents() {
+  function updateConsents() {
     gtag("consent", "update", {
       ad_storage: "granted",
       ad_user_data: "granted",
       ad_personalization: "granted",
       analytics_storage: "granted",
     });
-  })()
+  }
+</script>
+<script is:inline data-category="analytics">
+  updateConsents();
 </script>
 
 <!-- Global Metadata -->
