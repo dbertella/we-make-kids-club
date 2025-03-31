@@ -12,11 +12,11 @@ export const EventCollection: Collection = {
   },
   fields: [
     {
-      name: 'draft',
-      label: 'Draft',
       type: 'boolean',
+      name: 'published',
+      label: 'Published',
       required: true,
-      description: 'If this is checked the post will not be published',
+      description: 'If this is NOT checked the post will not be published',
     },
     {
       name: "seoTitle",
