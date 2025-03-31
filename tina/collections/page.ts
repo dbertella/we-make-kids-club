@@ -14,23 +14,23 @@ export const PageCollection: Collection = {
     {
       name: "seoTitle",
       type: "string",
-      required: true
+      required: true,
     },
     {
       name: "seoDescription",
       type: "string",
-      required: true
+      required: true,
     },
     {
       name: "title",
       type: "string",
-      required: true
+      required: true,
     },
     {
       name: "body",
       type: "rich-text",
       isBody: true,
-      required: true
+      required: true,
     },
     {
       label: "Call to action",
@@ -41,45 +41,45 @@ export const PageCollection: Collection = {
           label: "Title",
           name: "title",
           type: "string",
-          required: true
+          required: true,
         },
         {
           label: "Url",
           name: "url",
           type: "string",
-          required: true
+          required: true,
         },
         {
           label: "Disclaimer",
           name: "disclaimer",
           type: "string",
         },
-      ]
+      ],
     },
     {
-      label: 'Testimonial',
-      name: 'testimonial',
-      type: 'object',
+      label: "Testimonial",
+      name: "testimonial",
+      type: "object",
       list: true,
       ui: {
         itemProps: (item) => {
           return {
-            label: item.title
-          }
+            label: item.title,
+          };
         },
       },
       fields: [
         {
-          label: 'Title',
-          name: 'title',
-          type: 'string',
+          label: "Title",
+          name: "title",
+          type: "string",
         },
         {
-          type: 'image',
-          label: 'Image',
-          name: 'imgSrc',
+          type: "image",
+          label: "Image",
+          name: "imgSrc",
         },
       ],
     },
-  ]
-}
+  ],
+};

@@ -3,7 +3,7 @@ import client from "../tina/__generated__/client";
 
 const news = defineCollection({
   loader: async () => {
-    const postsResponse = await client.queries.newsConnection();
+    const postsResponse = await client.queries.newsConnection({filter: { draft: { eq: false } }});
 
     // Map Tina posts to the correct format for Astro
     return postsResponse.data.newsConnection.edges
@@ -25,6 +25,7 @@ const news = defineCollection({
       path: z.string(),
       relativePath: z.string(),
     }),
+    draft: z.boolean(),
     seoTitle: z.string().optional(),
     seoDescription: z.string().optional(),
     title: z.string(),
