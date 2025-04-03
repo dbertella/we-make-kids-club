@@ -95,7 +95,7 @@ const posts = (await getCollection("news")).sort(
           {
             posts.map((post) => (
               <li>
-                <a href={`/news/${post.id}/`}>
+                <a href={`/news/${post.id}`}>
                   <img
                     width={720}
                     height={360}

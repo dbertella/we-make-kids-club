@@ -96,6 +96,7 @@ export default defineConfig({
 
   redirects: {
     "/home": "/",
+    "/news/eco-fashion-workshop-leyton": "/news/Make-Your-Own-Summer-Clothes-Kids-Workshop",
     ...(process.env.TINA_PUBLIC_IS_LOCAL === "true"
       ? { "/admin": "/admin/index.html" }
       : {}),
