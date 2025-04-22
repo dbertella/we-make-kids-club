@@ -31,6 +31,24 @@ export const PageCollection: Collection = {
       type: "rich-text",
       isBody: true,
       required: true,
+      templates: [
+        {
+          name: "ButtonComponent",
+          label: "Button",
+          fields: [
+            {
+              name: "url",
+              label: "Url",
+              type: "string",
+            },
+            {
+              name: "label",
+              label: "Button Text",
+              type: "string",
+            },
+          ],
+        },
+      ],
     },
     {
       label: "Call to action",
