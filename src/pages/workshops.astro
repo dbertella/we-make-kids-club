@@ -2,24 +2,22 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import Page from "../../tina/pages/Workshops";
 import client from "../../tina/__generated__/client";
-import HomePage from "../../tina/pages/HomePage.tsx";
-const data = await client.queries.home({ relativePath: "home.mdx" });
-
+const data = await client.queries.workshops({ relativePath: "workshops.mdx" });
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <BaseHead
-      title={data.data.home.seoTitle}
-      description={data.data.home.seoDescription}
+      title={data.data.workshops.seoTitle}
+      description={data.data.workshops.seoDescription}
     />
-
   </head>
   <body>
     <Header />
-    <HomePage {...data} client:tina />
+    <Page {...data} client:tina />
     <Footer />
   </body>
 </html>

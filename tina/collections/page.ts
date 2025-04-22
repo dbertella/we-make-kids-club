@@ -4,6 +4,9 @@ export const PageCollection: Collection = {
   name: "page",
   label: "Pages",
   path: "src/content/page",
+  match: {
+    exclude: '{workshops,home}',
+  },
   format: "mdx",
   ui: {
     router: ({ document }) => {
@@ -31,55 +34,6 @@ export const PageCollection: Collection = {
       type: "rich-text",
       isBody: true,
       required: true,
-    },
-    {
-      label: "Call to action",
-      name: "cta",
-      type: "object",
-      fields: [
-        {
-          label: "Title",
-          name: "title",
-          type: "string",
-          required: true,
-        },
-        {
-          label: "Url",
-          name: "url",
-          type: "string",
-          required: true,
-        },
-        {
-          label: "Disclaimer",
-          name: "disclaimer",
-          type: "string",
-        },
-      ],
-    },
-    {
-      label: "Testimonial",
-      name: "testimonial",
-      type: "object",
-      list: true,
-      ui: {
-        itemProps: (item) => {
-          return {
-            label: item.title,
-          };
-        },
-      },
-      fields: [
-        {
-          label: "Title",
-          name: "title",
-          type: "string",
-        },
-        {
-          type: "image",
-          label: "Image",
-          name: "imgSrc",
-        },
-      ],
     },
   ],
 };
