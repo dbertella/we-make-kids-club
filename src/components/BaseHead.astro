@@ -4,8 +4,8 @@
 import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
 import "@fontsource/cherry-bomb-one";
-import '@fontsource/poppins/400.css';
-import '@fontsource/poppins/700.css';
+import "@fontsource/poppins/400.css";
+import "@fontsource/poppins/700.css";
 
 interface Props {
   title: string;
@@ -40,15 +40,12 @@ const { title, description, image = "/wemakekidsclub.png" } = Astro.props;
 </script>
 
 <script is:inline data-category="analytics">
-  function updateConsents() {
-    console.log('GA Consent granted')
-    gtag("consent", "update", {
-      ad_storage: "granted",
-      ad_user_data: "granted",
-      ad_personalization: "granted",
-      analytics_storage: "granted",
-    });
-  }
+  gtag("consent", "update", {
+    ad_storage: "granted",
+    ad_user_data: "granted",
+    ad_personalization: "granted",
+    analytics_storage: "granted",
+  });
 </script>
 
 <!-- Global Metadata -->
