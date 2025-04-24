@@ -104,8 +104,6 @@ const posts = (await getCollection("news")).sort(
                   />
                   <p class="date">
                     <strong>{post.data.category}</strong>
-                    {" • "}
-                    <FormattedDate date={post.data.pubDate} />
                   </p>
                   <h4 class="title">{post.data.title}</h4>
                   <p class="gray-dark">{post.data.description}</p>
