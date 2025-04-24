@@ -1,6 +1,11 @@
 import { tinaField, useTina } from "tinacms/dist/react";
 import type { PageQuery, PageQueryVariables } from "../__generated__/types";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
+import ButtonComponent from "../components/ButtonComponent.tsx";
+
+const components = {
+  ButtonComponent,
+};
 
 type Props = {
   variables: PageQueryVariables;
@@ -22,7 +27,7 @@ const TinaPage = (props: Props) => {
       <h1 data-tina-field={tinaField(page, "title")}>{page.title}</h1>
       <section>
         <div data-tina-field={tinaField(page, "body")}>
-          <TinaMarkdown content={page.body} />
+          <TinaMarkdown content={page.body} components={components} />
         </div>
       </section>
     </main>
