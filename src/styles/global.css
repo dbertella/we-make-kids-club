@@ -78,7 +78,7 @@ body::after {
 
 main {
   width: 720px;
-  max-width: calc(100% - 2em);
+  max-width: calc(100% - 2rem);
   margin: auto;
   padding: 3rem 1rem;
 }
@@ -88,7 +88,7 @@ article {
   max-width: 100%;
   margin: auto;
   h1 {
-    font-size: 2.52em;
+    font-size: 2.52rem;
     font-family: var(--header-font);
     font-weight: 400;
     font-style: normal;
@@ -109,7 +109,7 @@ h6 {
   line-height: 1.2;
 }
 h1 {
-  font-size: 3.052em;
+  font-size: 3.052rem;
   font-family: var(--header-font);
   font-weight: 400;
   font-style: normal;
@@ -118,16 +118,16 @@ h1 {
   margin-bottom: 3rem;
 }
 h2 {
-  font-size: 2.441em;
+  font-size: 2.441rem;
 }
 h3 {
-  font-size: 1.953em;
+  font-size: 1.953rem;
 }
 h4 {
-  font-size: 1.563em;
+  font-size: 1.563rem;
 }
 h5 {
-  font-size: 1.25em;
+  font-size: 1.25rem;
 }
 strong,
 b {
@@ -140,11 +140,9 @@ a:hover {
   color: var(--black);
 }
 p {
-  margin-bottom: 1em;
+  margin-bottom: 1rem;
 }
-.prose p {
-  margin-bottom: 2em;
-}
+
 textarea {
   width: 100%;
   font-size: 16px;
@@ -166,7 +164,7 @@ code {
   border-radius: 2px;
 }
 pre {
-  padding: 1.5em;
+  padding: 1.5rem;
   border-radius: 8px;
 }
 pre > code {
@@ -176,7 +174,7 @@ blockquote {
   border-left: 4px solid var(--secondary);
   padding: 0 0 0 20px;
   margin: 0px;
-  font-size: 1.333em;
+  font-size: 1.333rem;
 }
 hr {
   border: none;
@@ -330,7 +328,7 @@ hr {
     font-size: 18px;
   }
   main {
-    padding: 1em;
+    padding: 1rem;
   }
   body::before {
     top: 60%;
