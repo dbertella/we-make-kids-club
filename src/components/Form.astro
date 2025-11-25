@@ -60,113 +60,463 @@ const options = [
   </form>
 </section>
 
-<script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script>
+{import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY && (
+  <>
+    <script define:vars={{ siteKey: import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY }} is:inline>
+      // Store site key immediately - this script runs synchronously
+      window.RECAPTCHA_SITE_KEY = siteKey;
+      
+      // Define callback BEFORE loading the reCAPTCHA script
+      // This ensures it's available when the script loads
+      window.onRecaptchaLoad = function() {
+        console.log("reCAPTCHA script loaded");
+        
+        function getSiteKey() {
+          return window.RECAPTCHA_SITE_KEY;
+        }
+        
+        function ensureSiteKey(callback, maxRetries = 10, retryDelay = 50) {
+          let retries = 0;
+          function check() {
+            if (getSiteKey()) {
+              callback();
+            } else if (retries < maxRetries) {
+              retries++;
+              setTimeout(check, retryDelay);
+            } else {
+              console.error("reCAPTCHA site key not available after", maxRetries * retryDelay, "ms");
+            }
+          }
+          check();
+        }
+        
+        function initRecaptcha() {
+          const recaptchaContainer = document.getElementById("recaptcha");
+          if (!recaptchaContainer) {
+            console.warn("reCAPTCHA container not found");
+            return;
+          }
+
+          const siteKey = getSiteKey();
+          if (!siteKey) {
+            console.warn("reCAPTCHA site key not available");
+            return;
+          }
+
+          // Check if widget already exists and is valid
+          if (window.recaptchaWidgetId !== null && typeof window.grecaptcha !== "undefined") {
+            try {
+              // Check if the widget is still valid
+              window.grecaptcha.getResponse(window.recaptchaWidgetId);
+              console.log("reCAPTCHA widget already exists in onRecaptchaLoad (ID:", window.recaptchaWidgetId, "), skipping");
+              return;
+            } catch (error) {
+              // Widget is invalid, need to re-render
+              console.log("reCAPTCHA widget invalid in onRecaptchaLoad, re-rendering");
+              window.recaptchaWidgetId = null;
+            }
+          }
+
+          // Check if container already has a rendered widget
+          const hasRecaptchaIframe = recaptchaContainer.querySelector('iframe[src*="recaptcha"]');
+          if (hasRecaptchaIframe) {
+            console.log("reCAPTCHA iframe already exists in container, trying to find widget ID");
+            // Try to find the widget ID by checking all possible IDs
+            if (typeof window.grecaptcha !== "undefined") {
+              for (let i = 0; i < 10; i++) {
+                try {
+                  const token = window.grecaptcha.getResponse(i);
+                  // If we can get a response (even empty), this is a valid widget ID
+                  window.recaptchaWidgetId = i;
+                  console.log("Found existing reCAPTCHA widget ID:", i);
+                  return;
+                } catch (e) {
+                  // Continue searching
+                }
+              }
+            }
+            console.log("reCAPTCHA iframe exists but widget ID not found, skipping initialization");
+            return;
+          }
+
+          if (typeof window.grecaptcha !== "undefined") {
+            try {
+              // Clear container before rendering
+              recaptchaContainer.innerHTML = '';
+              window.recaptchaWidgetId = window.grecaptcha.render("recaptcha", {
+                sitekey: siteKey,
+                theme: "light",
+              });
+              console.log("reCAPTCHA initialized with widget ID:", window.recaptchaWidgetId);
+            } catch (error) {
+              console.error("Error initializing reCAPTCHA:", error);
+              if (error.message && error.message.includes("already been rendered")) {
+                console.log("Widget already rendered elsewhere");
+              }
+            }
+          }
+        }
+        
+        ensureSiteKey(() => {
+          console.log("Site key available, initializing reCAPTCHA");
+          if (typeof window.grecaptcha !== "undefined" && window.grecaptcha.ready) {
+            window.grecaptcha.ready(() => {
+              console.log("grecaptcha ready, initializing...");
+              initRecaptcha();
+            });
+          } else {
+            setTimeout(() => {
+              initRecaptcha();
+            }, 100);
+          }
+        });
+      };
+    </script>
+    <script src="https://www.google.com/recaptcha/api.js?render=explicit&onload=onRecaptchaLoad" async defer></script>
+  </>
+)}
 
 <script is:inline>
-  // TypeScript declarations for Google reCAPTCHA
-  declare global {
-    interface Window {
-      grecaptcha: {
-        render: (container: string, options: { sitekey: string; theme?: string }) => number;
-        getResponse: (widgetId: number) => string;
-        reset: (widgetId: number) => void;
-      };
+  // Initialize widget ID on window object so it persists across navigation
+  if (!window.recaptchaWidgetId) {
+    window.recaptchaWidgetId = null;
+  }
+
+  // Get site key dynamically
+  function getSiteKey() {
+    return window.RECAPTCHA_SITE_KEY;
+  }
+
+  // Ensure site key is available (wait for it if needed)
+  function ensureSiteKey(callback, maxRetries = 10, retryDelay = 50) {
+    let retries = 0;
+    function check() {
+      if (getSiteKey()) {
+        callback();
+      } else if (retries < maxRetries) {
+        retries++;
+        setTimeout(check, retryDelay);
+      } else {
+        console.error("reCAPTCHA site key not available after", maxRetries * retryDelay, "ms");
+      }
+    }
+    check();
+  }
+
+  // Initialize reCAPTCHA when the script loads
+  function initRecaptcha() {
+    const recaptchaContainer = document.getElementById("recaptcha");
+    if (!recaptchaContainer) {
+      console.warn("reCAPTCHA container not found");
+      return;
+    }
+
+    const siteKey = getSiteKey();
+    if (!siteKey) {
+      console.warn("reCAPTCHA site key not available");
+      return;
+    }
+
+    // Check if widget already exists and is valid
+    if (window.recaptchaWidgetId !== null && typeof window.grecaptcha !== "undefined") {
+      try {
+        // Check if the widget is still valid by trying to get its response
+        window.grecaptcha.getResponse(window.recaptchaWidgetId);
+        // If we can get a response (even empty), the widget exists
+        console.log("reCAPTCHA widget already exists (ID:", window.recaptchaWidgetId, "), skipping re-initialization");
+        return;
+      } catch (error) {
+        // Widget is invalid, need to re-render
+        console.log("reCAPTCHA widget invalid, re-rendering");
+        window.recaptchaWidgetId = null;
+      }
+    }
+
+    // Check if container already has a rendered widget by checking for reCAPTCHA iframe
+    const hasRecaptchaIframe = recaptchaContainer.querySelector('iframe[src*="recaptcha"]');
+    if (hasRecaptchaIframe && window.recaptchaWidgetId === null) {
+      console.log("Container has reCAPTCHA iframe but no widget ID - trying to find widget ID");
+      // Try to find the widget ID by checking all widgets
+      if (typeof window.grecaptcha !== "undefined") {
+        for (let i = 0; i < 10; i++) {
+          try {
+            window.grecaptcha.getResponse(i);
+            window.recaptchaWidgetId = i;
+            console.log("Found existing reCAPTCHA widget ID:", i);
+            return;
+          } catch (e) {
+            // Continue searching
+          }
+        }
+      }
+      console.log("Skipping initialization - iframe exists but widget ID not found");
+      return;
+    }
+
+    if (typeof window.grecaptcha !== "undefined") {
+      try {
+        // Only clear if we don't have a valid widget and no iframe exists
+        if (window.recaptchaWidgetId === null && !hasRecaptchaIframe) {
+          recaptchaContainer.innerHTML = '';
+        }
+        window.recaptchaWidgetId = window.grecaptcha.render("recaptcha", {
+          sitekey: siteKey,
+          theme: "light",
+        });
+        console.log("reCAPTCHA initialized with widget ID:", window.recaptchaWidgetId);
+      } catch (error) {
+        console.error("Error initializing reCAPTCHA:", error);
+        // If render fails, it might be because widget already exists
+        if (error.message && error.message.includes("already been rendered")) {
+          console.log("Widget already rendered, attempting to find widget ID");
+          // Try to find existing widget by checking container
+          const iframe = recaptchaContainer.querySelector('iframe[src*="recaptcha"]');
+          if (iframe) {
+            console.log("Found existing iframe, widget is already rendered");
+          }
+        }
+      }
+    } else {
+      console.warn("reCAPTCHA not available");
     }
   }
 
-  const form = document.getElementById("contact-form") as HTMLFormElement;
-  const submitButton = form.querySelector(
-    'button[type="submit"]'
-  ) as HTMLButtonElement;
-  const loadingSpinner = submitButton.querySelector(".spinner") as HTMLElement;
+  // Store the submit handler so we can remove it if needed
+  let submitHandler = null;
 
-  const setLoading = (isLoading: boolean) => {
-    submitButton.disabled = isLoading;
-    loadingSpinner.classList.toggle("hidden", !isLoading);
-  };
-
-  let recaptchaWidgetId: number | null = null;
-  const siteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY;
-
-  // Initialize reCAPTCHA when the script loads
-  const initRecaptcha = () => {
-    if (typeof window.grecaptcha !== "undefined" && siteKey) {
-      recaptchaWidgetId = window.grecaptcha.render("recaptcha", {
-        sitekey: siteKey,
-        theme: "light",
-      });
+  // Wait for DOM to be ready
+  function initForm() {
+    const form = document.getElementById("contact-form");
+    if (!form) {
+      console.error("Form not found");
+      return;
     }
-  };
 
-  // Wait for reCAPTCHA script to load
-  if (typeof window.grecaptcha !== "undefined") {
-    initRecaptcha();
-  } else {
-    window.addEventListener("load", () => {
+    const submitButton = form.querySelector('button[type="submit"]');
+    const loadingSpinner = submitButton ? submitButton.querySelector(".spinner") : null;
+
+    if (!submitButton || !loadingSpinner) {
+      console.error("Form elements not found");
+      return;
+    }
+
+    const setLoading = (isLoading) => {
+      submitButton.disabled = isLoading;
+      loadingSpinner.classList.toggle("hidden", !isLoading);
+    };
+
+    // Remove old listener if it exists (for client-side navigation)
+    if (submitHandler) {
+      form.removeEventListener("submit", submitHandler);
+    }
+
+    // Create new submit handler
+    submitHandler = async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      // Get reCAPTCHA token if configured
+      const siteKey = getSiteKey();
+      if (siteKey && typeof window.grecaptcha !== "undefined") {
+        try {
+          let recaptchaToken = null;
+          
+          // Try to get token using widget ID if available
+          if (window.recaptchaWidgetId !== null) {
+            recaptchaToken = window.grecaptcha.getResponse(window.recaptchaWidgetId);
+          } else {
+            // Widget ID not set, try to find it by checking all possible widget IDs
+            // reCAPTCHA widget IDs are typically 0, 1, 2, etc.
+            for (let i = 0; i < 10; i++) {
+              try {
+                const token = window.grecaptcha.getResponse(i);
+                if (token) {
+                  recaptchaToken = token;
+                  window.recaptchaWidgetId = i; // Store it for future use
+                  console.log("Found reCAPTCHA widget ID:", i);
+                  break;
+                }
+              } catch (e) {
+                // Continue searching
+              }
+            }
+          }
+          
+          if (!recaptchaToken) {
+            alert("Please complete the reCAPTCHA verification");
+            return;
+          }
+          formData.append("recaptchaToken", recaptchaToken);
+        } catch (error) {
+          console.error("reCAPTCHA error:", error);
+          alert("reCAPTCHA verification failed. Please try again.");
+          return;
+        }
+      }
+
+      setLoading(true);
+
+      try {
+        const response = await fetch("/actions/subscribe", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        // Reset reCAPTCHA
+        if (window.recaptchaWidgetId !== null && typeof window.grecaptcha !== "undefined") {
+          window.grecaptcha.reset(window.recaptchaWidgetId);
+        }
+
+        if (result.redirect) {
+          window.location.href = result.redirect;
+        } else {
+          window.location.href = "/success";
+        }
+
+        form.reset();
+      } catch (error) {
+        console.error("Error:", error);
+        alert(error instanceof Error ? error.message : "An error occurred. Please try again.");
+        // Reset reCAPTCHA on error
+        if (window.recaptchaWidgetId !== null && typeof window.grecaptcha !== "undefined") {
+          window.grecaptcha.reset(window.recaptchaWidgetId);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // Add the new listener
+    form.addEventListener("submit", submitHandler);
+  }
+
+  // Initialize when DOM is ready
+  function initialize() {
+    initForm();
+    
+    // Also try to initialize reCAPTCHA if it's already loaded (for client-side navigation)
+    // Only if the form and reCAPTCHA container exist on this page
+    const form = document.getElementById("contact-form");
+    const recaptchaContainer = document.getElementById("recaptcha");
+    
+    if (!form || !recaptchaContainer) {
+      return;
+    }
+    
+    // Check if reCAPTCHA is already rendered by checking for iframe
+    const recaptchaIframe = recaptchaContainer.querySelector('iframe[src*="recaptcha"]');
+    if (recaptchaIframe && window.recaptchaWidgetId === null) {
+      console.log("reCAPTCHA iframe already exists, trying to find widget ID");
+      // Try to find the widget ID
       if (typeof window.grecaptcha !== "undefined") {
-        initRecaptcha();
+        for (let i = 0; i < 10; i++) {
+          try {
+            window.grecaptcha.getResponse(i);
+            window.recaptchaWidgetId = i;
+            console.log("Found existing reCAPTCHA widget ID in initialize():", i);
+            return;
+          } catch (e) {
+            // Continue searching
+          }
+        }
+      }
+      console.log("reCAPTCHA iframe exists but widget ID not found");
+    }
+    
+    if (recaptchaIframe && window.recaptchaWidgetId !== null) {
+      console.log("reCAPTCHA already initialized with ID:", window.recaptchaWidgetId);
+      return;
+    }
+    
+    // Function to attempt initialization (only if widget doesn't exist)
+    function tryInitRecaptcha() {
+      // Don't initialize if widget already exists or iframe is present
+      if (window.recaptchaWidgetId !== null) {
+        console.log("reCAPTCHA widget already exists, skipping initialization in initialize()");
+        return true;
+      }
+      
+      const iframe = recaptchaContainer.querySelector('iframe[src*="recaptcha"]');
+      if (iframe) {
+        console.log("reCAPTCHA iframe found, skipping initialization");
+        return true;
+      }
+      
+      console.log("Attempting to initialize reCAPTCHA, grecaptcha:", typeof window.grecaptcha);
+      
+      if (typeof window.grecaptcha !== "undefined") {
+        if (window.grecaptcha.ready) {
+          window.grecaptcha.ready(() => {
+            console.log("grecaptcha ready in initialize");
+            // Double-check widget doesn't exist and iframe isn't present before initializing
+            if (window.recaptchaWidgetId === null && !recaptchaContainer.querySelector('iframe[src*="recaptcha"]')) {
+              initRecaptcha();
+            }
+          });
+        } else {
+          if (window.recaptchaWidgetId === null && !recaptchaContainer.querySelector('iframe[src*="recaptcha"]')) {
+            initRecaptcha();
+          }
+        }
+        return true;
+      }
+      return false;
+    }
+    
+    // Ensure site key is available, then try to initialize
+    // But only if widget doesn't already exist (onRecaptchaLoad might have already initialized it)
+    ensureSiteKey(() => {
+      // Check if widget already exists or iframe is present (might have been initialized by onRecaptchaLoad)
+      if (window.recaptchaWidgetId !== null || recaptchaContainer.querySelector('iframe[src*="recaptcha"]')) {
+        console.log("reCAPTCHA already initialized, skipping initialize()");
+        return;
+      }
+      
+      // Site key is available, now check if grecaptcha is loaded
+      if (typeof window.grecaptcha !== "undefined") {
+        tryInitRecaptcha();
+      } else {
+        // grecaptcha not loaded yet, wait for it
+        // But also check if onRecaptchaLoad will handle it
+        const checkInterval = setInterval(() => {
+          if (typeof window.grecaptcha !== "undefined") {
+            clearInterval(checkInterval);
+            // Check again if widget exists or iframe is present before trying to initialize
+            if (window.recaptchaWidgetId === null && !recaptchaContainer.querySelector('iframe[src*="recaptcha"]')) {
+              tryInitRecaptcha();
+            }
+          }
+        }, 100);
+        
+        // Stop checking after 5 seconds
+        setTimeout(() => {
+          clearInterval(checkInterval);
+        }, 5000);
       }
     });
   }
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initialize);
+  } else {
+    initialize();
+  }
 
-    const formData = new FormData(form);
-
-    // Get reCAPTCHA token if configured
-    if (siteKey && recaptchaWidgetId !== null && typeof window.grecaptcha !== "undefined") {
-      try {
-        const recaptchaToken = window.grecaptcha.getResponse(recaptchaWidgetId);
-        if (!recaptchaToken) {
-          alert("Please complete the reCAPTCHA verification");
-          return;
-        }
-        formData.append("recaptchaToken", recaptchaToken);
-      } catch (error) {
-        console.error("reCAPTCHA error:", error);
-        alert("reCAPTCHA verification failed. Please try again.");
-        return;
-      }
-    }
-
-    setLoading(true);
-
-    try {
-      const response = await fetch("/actions/subscribe", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-
-      // Reset reCAPTCHA
-      if (recaptchaWidgetId !== null && typeof window.grecaptcha !== "undefined") {
-        window.grecaptcha.reset(recaptchaWidgetId);
-      }
-
-      if (result.redirect) {
-        window.location.href = result.redirect;
-      } else {
-        window.location.href = "/success";
-      }
-
-      form.reset();
-    } catch (error) {
-      console.error("Error:", error);
-      alert(error instanceof Error ? error.message : "An error occurred. Please try again.");
-      // Reset reCAPTCHA on error
-      if (recaptchaWidgetId !== null && typeof window.grecaptcha !== "undefined") {
-        window.grecaptcha.reset(recaptchaWidgetId);
-      }
-    } finally {
-      setLoading(false);
-    }
+  // Listen for Astro view transitions (client-side navigation)
+  document.addEventListener("astro:page-load", () => {
+    console.log("Astro page loaded (view transition)");
+    // Reset widget ID so it can be re-initialized
+    window.recaptchaWidgetId = null;
+    // Re-initialize form and reCAPTCHA
+    initialize();
   });
 </script>
 
