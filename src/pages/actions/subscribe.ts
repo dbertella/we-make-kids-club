@@ -13,6 +13,46 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     | string[]
     | null;
   const message = selectedWorkshops?.join(", ") ?? "";
+  const recaptchaToken = formData.get("recaptchaToken") as string | null;
+
+  // Verify reCAPTCHA token
+  if (process.env.RECAPTCHA_SECRET_KEY) {
+    if (!recaptchaToken) {
+      return new Response(
+        JSON.stringify({ error: "reCAPTCHA verification is required" }),
+        { status: 400 }
+      );
+    }
+
+    try {
+      const verifyUrl = "https://www.google.com/recaptcha/api/siteverify";
+      const verifyResponse = await fetch(verifyUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          secret: process.env.RECAPTCHA_SECRET_KEY,
+          response: recaptchaToken,
+        }),
+      });
+
+      const verifyData = await verifyResponse.json();
+
+      if (!verifyData.success) {
+        return new Response(
+          JSON.stringify({ error: "reCAPTCHA verification failed" }),
+          { status: 400 }
+        );
+      }
+    } catch (error) {
+      console.error("reCAPTCHA verification error:", error);
+      return new Response(
+        JSON.stringify({ error: "reCAPTCHA verification error" }),
+        { status: 500 }
+      );
+    }
+  }
 
   // Throw an error if we're missing any of the needed fields.
   if (!email || !name || !selectedWorkshops || selectedWorkshops.length === 0) {
