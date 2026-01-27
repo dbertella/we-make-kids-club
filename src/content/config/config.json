@@ -14,12 +14,16 @@
       "link": "/about"
     },
     {
-      "title": "Workshops",
-      "link": "/workshops"
+      "title": "For Schools",
+      "link": "eco-fashion-workshops-for-schools"
     },
     {
-      "title": "For adults",
+      "title": "For Adults",
       "link": "eco-fashion-workshops-for-adults"
+    },
+    {
+      "title": "For Families",
+      "link": "eco-fashion-workshops-for-families"
     },
     {
       "title": "News",
