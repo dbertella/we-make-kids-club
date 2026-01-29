@@ -97,6 +97,11 @@ export const PageCollection: Collection = {
           label: "Image",
           name: "imgSrc",
         },
+        {
+          label: "Url",
+          name: "url",
+          type: "string",
+        },
       ],
     },
   ],

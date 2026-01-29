@@ -34,19 +34,40 @@ const HomePage = (props: Props) => {
         className="activities"
         data-tina-field={tinaField(page, "testimonial")}
       >
-        {page.testimonial?.map((testimonial) => (
-          <div key={`${testimonial?.title}`} className="activity-card">
-            <div data-tina-field={tinaField(testimonial, "imgSrc")}></div>
-            {testimonial?.imgSrc && (
-              <img src={testimonial.imgSrc} alt={`${testimonial.title}`} />
-            )}
-            {
-              <h3 data-tina-field={tinaField(testimonial, "title")}>
-                {testimonial?.title}
-              </h3>
-            }
-          </div>
-        ))}
+        {page.testimonial?.map((testimonial) => {
+          const key = testimonial?.title || `testimonial-${Math.random()}`;
+          const hasUrl = !!testimonial?.url;
+          
+          return (
+            <div
+              key={key}
+              className={`activity-card ${hasUrl ? "activity-card--clickable" : ""}`}
+            >
+              <div data-tina-field={tinaField(testimonial, "imgSrc")}></div>
+              {testimonial?.imgSrc && (
+                <img 
+                  src={testimonial.imgSrc} 
+                  alt={testimonial.title || ""} 
+                />
+              )}
+              {testimonial?.title && (
+                <h3 data-tina-field={tinaField(testimonial, "title")}>
+                  {testimonial.title}
+                </h3>
+              )}
+              {hasUrl && testimonial.url && (
+                <a
+                  href={testimonial.url}
+                  className="activity-card__link"
+                  data-tina-field={tinaField(testimonial, "url")}
+                  aria-label={`${testimonial.title || "Testimonial"} - ${testimonial.url}`}
+                >
+                  <span className="sr-only">{testimonial.title || "View testimonial"}</span>
+                </a>
+              )}
+            </div>
+          );
+        })}
       </section>
 
       <main>
