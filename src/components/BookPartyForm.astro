@@ -198,7 +198,7 @@ const optionSets: Record<string, string[]> = {
           window.grecaptcha.reset(window.recaptchaWidgetId);
         }
 
-        window.location.href = result.redirect || "/success";
+        window.location.href = result.redirect || "/book-a-party-success";
         form.reset();
       } catch (error) {
         console.error("Error:", error);

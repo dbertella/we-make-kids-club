@@ -60,6 +60,17 @@ export const BookPartyConfigCollection: Collection = {
       required: true,
     },
     {
+      name: "customerEmailBody",
+      label: "Email body sent to customer",
+      type: "string",
+      required: true,
+      ui: {
+        component: "textarea",
+        description:
+          "Use {name} for the sender's name, {mailTo} for your email address",
+      },
+    },
+    {
       name: "fields",
       label: "Form fields",
       type: "object",

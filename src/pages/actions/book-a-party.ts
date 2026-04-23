@@ -92,28 +92,16 @@ export const POST: APIRoute = async ({ request }) => {
 
   // Confirmation email to the enquirer
   try {
-    const customerHtml = `
-      <div>
-        <p style="font-size:1rem;font-family:roboto,sans-serif;">
-          Hi ${name},
-        </p>
-        <p style="font-size:1rem;font-family:roboto,sans-serif;">
-          Thanks for your interest in an <b>eco-fashion birthday party</b> with WE MAKE Kids Club!
-        </p>
-        <p style="font-size:1rem;font-family:roboto,sans-serif;">
-          We've received your enquiry and will get back to you shortly with more details.
-        </p>
-        <p style="font-size:1rem;font-family:roboto,sans-serif;">
-          In the meantime, feel free to reach out at
-          <a href="mailto:${siteConfig.mailTo}">${siteConfig.mailTo}</a>
-          if you have any questions.
-        </p>
-        <p style="font-size:1rem;font-family:roboto,sans-serif;">
-          Can't wait to create together!
-        </p>
-        <b>Aurélie</b><br>
-        <span style="font-size:1rem;font-family:roboto,sans-serif;">Founder of WE MAKE Kids Club</span>
-      </div>`;
+    const bodyText = formConfig.customerEmailBody
+      .replace(/{name}/g, name)
+      .replace(/{mailTo}/g, siteConfig.mailTo);
+
+    const paragraphs = bodyText
+      .split("\n\n")
+      .map((p) => `<p style="font-size:1rem;font-family:roboto,sans-serif;">${p.replace(/\n/g, "<br>")}</p>`)
+      .join("\n");
+
+    const customerHtml = `<div>${paragraphs}</div>`;
     await sendEmail({
       to: email,
       subject: formConfig.customerEmailSubject,
@@ -124,7 +112,7 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   return new Response(
-    JSON.stringify({ message: "Success!", redirect: "/success" }),
+    JSON.stringify({ message: "Success!", redirect: "/book-a-party-success" }),
     { status: 200 }
   );
 };

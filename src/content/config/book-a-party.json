@@ -11,6 +11,7 @@
   ],
   "ownerEmailSubject": "[wemakekidsclub.com] Party enquiry from {name}",
   "customerEmailSubject": "We received your party enquiry!",
+  "customerEmailBody": "Hi {name},\n\nThanks for your interest in an eco-fashion birthday party with WE MAKE Kids Club!\n\nWe've received your enquiry and will get back to you shortly with more details.\n\nIn the meantime, feel free to reach out at {mailTo} if you have any questions.\n\nCan't wait to create together!\n\nAurélie\nFounder of WE MAKE Kids Club",
   "fields": [
     { "name": "name", "type": "text", "label": "Name", "required": true },
     { "name": "recipient", "type": "email", "label": "Email", "required": true },
