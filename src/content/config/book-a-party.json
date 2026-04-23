@@ -1,0 +1,22 @@
+{
+  "ctaText": "Send enquiry",
+  "partyPackages": [
+    "T-Shirt Glow-Up — £260 (t-shirts incl.)",
+    "Style Your Tote Bag — £240 (tote bags incl.)",
+    "Sew Your Own Purse / Bag — £210"
+  ],
+  "ageGroups": [
+    "Mini makers (5-7yo)",
+    "Young creatives (8-11yo)"
+  ],
+  "ownerEmailSubject": "[wemakekidsclub.com] Party enquiry from {name}",
+  "customerEmailSubject": "We received your party enquiry!",
+  "fields": [
+    { "name": "name", "type": "text", "label": "Name", "required": true },
+    { "name": "recipient", "type": "email", "label": "Email", "required": true },
+    { "name": "telephone", "type": "tel", "label": "Telephone", "required": true },
+    { "name": "partyPackage", "type": "radio", "label": "Preferred party package", "options": "partyPackages", "required": true },
+    { "name": "ageGroup", "type": "radio", "label": "Age group", "options": "ageGroups", "required": true },
+    { "name": "message", "type": "textarea", "label": "Message", "required": false }
+  ]
+}

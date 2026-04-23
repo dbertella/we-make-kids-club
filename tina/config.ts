@@ -2,6 +2,7 @@ import { defineConfig } from "tinacms";
 import { EventCollection } from "./collections/news";
 import { GlobalConfigCollection } from "./collections/global-config";
 import { PageCollection } from "./collections/page";
+import { BookPartyConfigCollection } from "./collections/book-a-party-config";
 
 // Your hosting provider likely exposes this as an environment variable
 const branch =
@@ -30,6 +31,6 @@ export default defineConfig({
   },
   // See docs on content modeling for more info on how to setup new content models: https://tina.io/docs/schema/
   schema: {
-    collections: [EventCollection, PageCollection, GlobalConfigCollection],
+    collections: [EventCollection, PageCollection, GlobalConfigCollection, BookPartyConfigCollection],
   },
 });

@@ -1,0 +1,343 @@
+---
+import config from "../content/config/book-a-party.json";
+
+const optionSets: Record<string, string[]> = {
+  partyPackages: config.partyPackages,
+  ageGroups: config.ageGroups,
+};
+---
+
+<section class="party-form">
+  <form action="/actions/book-a-party" method="post" id="contact-form">
+    {config.fields.map((field) => {
+      if (field.type === "radio") {
+        const options = optionSets[field.options];
+        return (
+          <div>
+            <fieldset>
+              <legend>{field.label}</legend>
+              {options.map((opt) => (
+                <div class="radio-item">
+                  <input type="radio" id={opt} name={field.name} value={opt} />
+                  <label for={opt}>{opt}</label>
+                </div>
+              ))}
+            </fieldset>
+          </div>
+        );
+      }
+
+      if (field.type === "textarea") {
+        return (
+          <div>
+            <label for={`send-email__${field.name}`}>{field.label}</label>
+            <textarea
+              name={field.name}
+              id={`send-email__${field.name}`}
+              required={field.required}
+            ></textarea>
+          </div>
+        );
+      }
+
+      return (
+        <div>
+          <label for={`send-email__${field.name}`}>{field.label}</label>
+          <input
+            type={field.type}
+            name={field.name}
+            id={`send-email__${field.name}`}
+            required={field.required}
+          />
+        </div>
+      );
+    })}
+    {import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY && (
+      <div class="recaptcha-container">
+        <div id="recaptcha" data-sitekey={import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY}></div>
+      </div>
+    )}
+    <section class="cta">
+      <button type="submit" class="button">
+        <svg class="spinner hidden" width="20" height="20" viewBox="0 0 24 24">
+          <circle
+            class="spinner-circle"
+            cx="12"
+            cy="12"
+            r="10"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-dasharray="30 60"></circle>
+        </svg>
+        <span class="button-text">{config.ctaText}</span>
+      </button>
+    </section>
+  </form>
+</section>
+
+{import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY && (
+  <>
+    <script define:vars={{ siteKey: import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY }} is:inline>
+      window.RECAPTCHA_SITE_KEY = siteKey;
+
+      window.onRecaptchaLoad = function() {
+        function getSiteKey() { return window.RECAPTCHA_SITE_KEY; }
+
+        function initRecaptcha() {
+          const el = document.getElementById("recaptcha");
+          if (!el || !getSiteKey()) return;
+          if (window.recaptchaWidgetId !== null && typeof window.grecaptcha !== "undefined") {
+            try { window.grecaptcha.getResponse(window.recaptchaWidgetId); return; } catch (e) { window.recaptchaWidgetId = null; }
+          }
+          if (el.querySelector('iframe[src*="recaptcha"]')) {
+            if (typeof window.grecaptcha !== "undefined") {
+              for (let i = 0; i < 10; i++) { try { window.grecaptcha.getResponse(i); window.recaptchaWidgetId = i; return; } catch (e) {} }
+            }
+            return;
+          }
+          if (typeof window.grecaptcha !== "undefined") {
+            try {
+              el.innerHTML = '';
+              window.recaptchaWidgetId = window.grecaptcha.render("recaptcha", { sitekey: getSiteKey(), theme: "light" });
+            } catch (error) {
+              console.error("Error initializing reCAPTCHA:", error);
+            }
+          }
+        }
+
+        if (typeof window.grecaptcha !== "undefined" && window.grecaptcha.ready) {
+          window.grecaptcha.ready(() => initRecaptcha());
+        } else {
+          setTimeout(initRecaptcha, 100);
+        }
+      };
+    </script>
+    <script src="https://www.google.com/recaptcha/api.js?render=explicit&onload=onRecaptchaLoad" async defer></script>
+  </>
+)}
+
+<script is:inline>
+  if (!window.recaptchaWidgetId) { window.recaptchaWidgetId = null; }
+
+  function getSiteKey() { return window.RECAPTCHA_SITE_KEY; }
+
+  function initRecaptcha() {
+    const el = document.getElementById("recaptcha");
+    if (!el || !getSiteKey()) return;
+    if (window.recaptchaWidgetId !== null && typeof window.grecaptcha !== "undefined") {
+      try { window.grecaptcha.getResponse(window.recaptchaWidgetId); return; } catch (e) { window.recaptchaWidgetId = null; }
+    }
+    const hasIframe = el.querySelector('iframe[src*="recaptcha"]');
+    if (hasIframe && window.recaptchaWidgetId === null) {
+      if (typeof window.grecaptcha !== "undefined") {
+        for (let i = 0; i < 10; i++) { try { window.grecaptcha.getResponse(i); window.recaptchaWidgetId = i; return; } catch (e) {} }
+      }
+      return;
+    }
+    if (typeof window.grecaptcha !== "undefined") {
+      try {
+        if (window.recaptchaWidgetId === null && !hasIframe) { el.innerHTML = ''; }
+        window.recaptchaWidgetId = window.grecaptcha.render("recaptcha", { sitekey: getSiteKey(), theme: "light" });
+      } catch (error) { console.error("Error initializing reCAPTCHA:", error); }
+    }
+  }
+
+  let submitHandler = null;
+
+  function initForm() {
+    const form = document.getElementById("contact-form");
+    if (!form) return;
+
+    const submitButton = form.querySelector('button[type="submit"]');
+    const loadingSpinner = submitButton ? submitButton.querySelector(".spinner") : null;
+    if (!submitButton || !loadingSpinner) return;
+
+    const setLoading = (isLoading) => {
+      submitButton.disabled = isLoading;
+      loadingSpinner.classList.toggle("hidden", !isLoading);
+    };
+
+    if (submitHandler) { form.removeEventListener("submit", submitHandler); }
+
+    submitHandler = async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+
+      const siteKey = getSiteKey();
+      if (siteKey && typeof window.grecaptcha !== "undefined") {
+        try {
+          let recaptchaToken = null;
+          if (window.recaptchaWidgetId !== null) {
+            recaptchaToken = window.grecaptcha.getResponse(window.recaptchaWidgetId);
+          } else {
+            for (let i = 0; i < 10; i++) { try { const t = window.grecaptcha.getResponse(i); if (t) { recaptchaToken = t; window.recaptchaWidgetId = i; break; } } catch (e) {} }
+          }
+          if (!recaptchaToken) { alert("Please complete the reCAPTCHA verification"); return; }
+          formData.append("recaptchaToken", recaptchaToken);
+        } catch (error) {
+          console.error("reCAPTCHA error:", error);
+          alert("reCAPTCHA verification failed. Please try again.");
+          return;
+        }
+      }
+
+      setLoading(true);
+
+      try {
+        const response = await fetch("/actions/book-a-party", { method: "POST", body: formData });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (window.recaptchaWidgetId !== null && typeof window.grecaptcha !== "undefined") {
+          window.grecaptcha.reset(window.recaptchaWidgetId);
+        }
+
+        window.location.href = result.redirect || "/success";
+        form.reset();
+      } catch (error) {
+        console.error("Error:", error);
+        alert(error instanceof Error ? error.message : "An error occurred. Please try again.");
+        if (window.recaptchaWidgetId !== null && typeof window.grecaptcha !== "undefined") {
+          window.grecaptcha.reset(window.recaptchaWidgetId);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    form.addEventListener("submit", submitHandler);
+  }
+
+  function initialize() {
+    initForm();
+    const el = document.getElementById("recaptcha");
+    if (!el) return;
+    const iframe = el.querySelector('iframe[src*="recaptcha"]');
+    if (iframe && window.recaptchaWidgetId === null && typeof window.grecaptcha !== "undefined") {
+      for (let i = 0; i < 10; i++) { try { window.grecaptcha.getResponse(i); window.recaptchaWidgetId = i; return; } catch (e) {} }
+    }
+    if (!iframe && typeof window.grecaptcha !== "undefined") {
+      initRecaptcha();
+    } else if (!iframe) {
+      const check = setInterval(() => {
+        if (typeof window.grecaptcha !== "undefined") { clearInterval(check); initRecaptcha(); }
+      }, 100);
+      setTimeout(() => clearInterval(check), 5000);
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initialize);
+  } else {
+    initialize();
+  }
+
+  document.addEventListener("astro:page-load", () => {
+    window.recaptchaWidgetId = null;
+    initialize();
+  });
+</script>
+
+<style>
+  form {
+    max-width: 500px;
+    margin: 0 auto 3rem;
+    padding: 2rem;
+    border-radius: 5px;
+    background-color: rgba(var(--yellow), 0.1);
+    border: 3px solid rgb(var(--yellow));
+  }
+
+  label {
+    display: block;
+    color: rgb(var(--orange));
+    font-weight: bold;
+    font-size: 0.9rem;
+  }
+
+  input[type="email"],
+  input[type="text"],
+  input[type="tel"],
+  textarea,
+  fieldset {
+    width: calc(100% - 2rem);
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border: 2px solid rgb(var(--yellow));
+    border-radius: 5px;
+  }
+
+  textarea {
+    height: 100px;
+    resize: vertical;
+  }
+
+  fieldset {
+    background-color: rgba(var(--yellow), 0.05);
+  }
+
+  legend {
+    color: rgb(var(--orange));
+    font-weight: bold;
+    padding: 0 1rem;
+    border-radius: 5px;
+    font-size: 0.9rem;
+  }
+
+  .radio-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .radio-item input {
+    margin-right: 0.5rem;
+  }
+
+  .party-form .button {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  .party-form:has(input:checked) .button {
+    pointer-events: auto;
+    opacity: 1;
+    cursor: pointer;
+  }
+
+  .spinner {
+    margin-right: 0.5rem;
+  }
+
+  .spinner-circle {
+    transform-origin: center;
+    animation: rotate 1s linear infinite;
+  }
+
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .recaptcha-container {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  #recaptcha {
+    display: inline-block;
+  }
+</style>
