@@ -1,0 +1,194 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import CartPage from "../../components/CartPage.tsx";
+import Footer from "../../components/Footer.astro";
+import Header from "../../components/Header.astro";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title="Your Cart | We Make Kids Club"
+      description="Review your We Make Kids Club store cart and continue to secure checkout."
+    />
+  </head>
+  <body>
+    <Header />
+    <CartPage client:load />
+    <Footer />
+  </body>
+</html>
+
+<style is:global>
+  .cart-page {
+    max-width: 1000px;
+    min-height: 55vh;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+  }
+
+  .cart-heading {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e1e6df;
+    padding-bottom: 1.25rem;
+  }
+
+  .cart-heading h1 {
+    margin: 0.25rem 0;
+    color: #2c5f2d;
+  }
+
+  .cart-heading p,
+  .cart-item-info p,
+  .cart-empty p {
+    color: #626262;
+  }
+
+  .cart-heading .cart-eyebrow {
+    margin: 0;
+    color: #9a5b30;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .cart-content {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(250px, 320px);
+    align-items: start;
+    gap: 2.5rem;
+  }
+
+  .cart-items {
+    display: grid;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cart-item {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px solid #e1e6df;
+    padding: 0 0 1rem;
+  }
+
+  .cart-item img {
+    width: 96px;
+    aspect-ratio: 1;
+    border-radius: 4px;
+    object-fit: cover;
+    background: #f3f5f2;
+  }
+
+  .cart-item-info h2 {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .cart-item-info p {
+    margin-bottom: 0;
+    font-weight: 700;
+  }
+
+  .cart-remove,
+  .cart-clear {
+    border: 0;
+    padding: 0.4rem;
+    background: transparent;
+    color: #2c5f2d;
+    cursor: pointer;
+    font: inherit;
+    text-decoration: underline;
+  }
+
+  .cart-summary {
+    border-left: 1px solid #e1e6df;
+    padding-left: 1.5rem;
+  }
+
+  .cart-summary > p {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 1.25rem 0;
+  }
+
+  .cart-clear {
+    padding-left: 0;
+  }
+
+  .cart-checkout,
+  .cart-primary-link {
+    display: block;
+    width: 100%;
+    border: 0;
+    border-radius: 4px;
+    padding: 0.8rem 1rem;
+    background: #2c5f2d;
+    color: white;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .cart-checkout:disabled {
+    cursor: wait;
+    opacity: 0.7;
+  }
+
+  .cart-error {
+    color: #a32121;
+  }
+
+  .cart-empty {
+    padding: 2rem 0;
+  }
+
+  .cart-empty h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .cart-empty p {
+    margin-bottom: 1.5rem;
+  }
+
+  .cart-primary-link {
+    display: inline-block;
+    width: auto;
+  }
+
+  @media (max-width: 700px) {
+    .cart-content {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .cart-summary {
+      border-top: 1px solid #e1e6df;
+      border-left: 0;
+      padding: 1rem 0 0;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .cart-item {
+      grid-template-columns: 72px minmax(0, 1fr);
+    }
+
+    .cart-item img {
+      width: 72px;
+    }
+
+    .cart-remove {
+      grid-column: 2;
+      justify-self: start;
+    }
+  }
+</style>

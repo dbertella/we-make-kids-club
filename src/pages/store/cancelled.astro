@@ -1,0 +1,52 @@
+---
+import BaseHead from "../../components/BaseHead.astro";
+import Footer from "../../components/Footer.astro";
+import Header from "../../components/Header.astro";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title="Checkout Cancelled — We Make Kids Club"
+      description="Your checkout was cancelled. Your cart is still available if you'd like to try again."
+    />
+  </head>
+  <body>
+    <Header />
+    <main class="checkout-cancelled">
+      <h1>Checkout cancelled</h1>
+      <p>Your payment wasn't completed. You can return to the store and try again whenever you're ready.</p>
+      <a href="/store">Return to store</a>
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .checkout-cancelled {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+    text-align: center;
+  }
+
+  .checkout-cancelled h1 {
+    color: #2c5f2d;
+  }
+
+  .checkout-cancelled p {
+    color: #626262;
+    line-height: 1.6;
+  }
+
+  .checkout-cancelled a {
+    display: inline-block;
+    margin-top: 1rem;
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    background: #2c5f2d;
+    color: #fff;
+    text-decoration: none;
+  }
+</style>

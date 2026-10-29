@@ -1,0 +1,46 @@
+{
+  "products": [
+    {
+      "id": "prod-001",
+      "name": "DIY T-Shirt Yarn Kit",
+      "description": "Complete kit to make t-shirt yarn with the whole t-shirt. Includes instructions and materials.",
+      "price": 2499,
+      "image": "/8.png"
+    },
+    {
+      "id": "prod-002",
+      "name": "Eco Fashion Upcycling Bag",
+      "description": "Learn to upcycle old bags into fashion accessories. Perfect for kids and adults.",
+      "price": 1999,
+      "image": "/Blog Header IMG-9.png"
+    },
+    {
+      "id": "prod-003",
+      "name": "Name Art on T-Shirt Workshop",
+      "description": "Freezer paper t-shirt printing kit for kids to create custom designs.",
+      "price": 2999,
+      "image": "/3-min.png"
+    },
+    {
+      "id": "prod-004",
+      "name": "Family Upcycling Event Kit",
+      "description": "Complete materials for creating memories through upcycling projects with family.",
+      "price": 3999,
+      "image": "/what children learn in eco-fashion.png"
+    },
+    {
+      "id": "prod-005",
+      "name": "Eco-Fashion Starter Kit",
+      "description": "Everything needed to start your own eco-fashion journey with kids.",
+      "price": 4999,
+      "image": "/wemakekidsclub toddler workshop.png"
+    },
+    {
+      "id": "prod-006",
+      "name": "Sewing with Kids Starter Set",
+      "description": "Basic sewing kit designed for kids to learn eco-friendly fashion.",
+      "price": 3499,
+      "image": "/upcycled necklace from tshirt.png"
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+---
+import Stripe from "stripe";
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+
+export const prerender = false;
+
+const sessionId = Astro.url.searchParams.get("session_id");
+let isPaid = false;
+
+if (sessionId) {
+  try {
+    const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY);
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    isPaid = session.payment_status === "paid";
+  } catch (error) {
+    console.error("Could not verify Stripe Checkout Session:", error);
+  }
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={isPaid ? "Thank You — We Make Kids Club" : "Payment Not Confirmed — We Make Kids Club"}
+      description={isPaid ? "Your order is confirmed. Thank you for shopping with us." : "We could not confirm your payment. Please contact us or return to the store."}
+    />
+  </head>
+  <body>
+    <Header />
+    <main class="checkout-result">
+      <div class:list={["result-mark", { "result-mark-error": !isPaid }]} aria-hidden="true">
+        {isPaid ? "✓" : "!"}
+      </div>
+      <h1>{isPaid ? "Order confirmed" : "Payment not confirmed"}</h1>
+      <p>
+        {isPaid
+          ? "Thank you for your purchase. Your payment was confirmed, and your order is being processed."
+          : "We couldn't confirm a completed payment. Please check your Stripe confirmation email or contact us if you were charged."}
+      </p>
+      {isPaid && sessionId && <p class="session-id">Reference: <code>{sessionId}</code></p>}
+      <a class="store-link" href="/store">Return to store</a>
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .checkout-result {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+    text-align: center;
+  }
+
+  .result-mark {
+    display: grid;
+    width: 4rem;
+    aspect-ratio: 1;
+    place-items: center;
+    margin: 0 auto 1rem;
+    border: 2px solid #2c5f2d;
+    border-radius: 50%;
+    color: #2c5f2d;
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  .result-mark-error {
+    border-color: #a32121;
+    color: #a32121;
+  }
+
+  .checkout-result h1 {
+    color: #2c5f2d;
+  }
+
+  .checkout-result p {
+    color: #626262;
+    line-height: 1.6;
+  }
+
+  .session-id code {
+    overflow-wrap: anywhere;
+  }
+
+  .store-link {
+    display: inline-block;
+    margin-top: 1rem;
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    background: #2c5f2d;
+    color: #fff;
+    text-decoration: none;
+  }
+</style>
