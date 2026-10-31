@@ -1,0 +1,11 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import CartPage from "../../components/CartPage.tsx";
+---
+
+<SiteLayout
+  title="Your Cart | We Make Kids Club"
+  description="Review your We Make Kids Club store cart and continue to secure checkout."
+>
+  <CartPage client:load />
+</SiteLayout>

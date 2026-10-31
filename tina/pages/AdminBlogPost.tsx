@@ -31,7 +31,13 @@ export default function AdminNewsPost(props: Props) {
         className="hero-image"
       >
         {news.heroImage && (
-          <img width={1020} height={510} src={news.heroImage} alt="" />
+          <img
+            className="article-hero-image"
+            width={1020}
+            height={510}
+            src={news.heroImage}
+            alt=""
+          />
         )}
       </div>
       <div className="prose">

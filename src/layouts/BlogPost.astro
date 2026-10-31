@@ -1,25 +1,14 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
+import SiteLayout from "./SiteLayout.astro";
 
 type Props = { data: { news: CollectionEntry<"news">["data"] } };
 
 const { seoTitle, seoDescription, heroImage } = Astro.props.data.news;
 ---
 
-<html lang="en">
-  <head>
-    <BaseHead title={seoTitle} description={seoDescription} image={heroImage} />
-
-  </head>
-
-  <body>
-    <Header />
-    <main>
-      <slot />
-    </main>
-    <Footer />
-  </body>
-</html>
+<SiteLayout title={seoTitle} description={seoDescription} image={heroImage}>
+  <main>
+    <slot />
+  </main>
+</SiteLayout>
