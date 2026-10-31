@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { readCart, writeCart, type Product } from "../utils/cart";
-import { products } from "../data/products";
+import { products, type Product } from "../data/products";
+import { readCart, writeCart } from "../utils/cart";
 
 const formatPrice = (priceInPence: number) =>
   (priceInPence / 100).toLocaleString("en-GB", {
@@ -34,24 +34,31 @@ export default function StorePage() {
           const quantity = cart.filter((item) => item.id === product.id).length;
           return (
             <article className="product-card" key={product.id}>
-              <img src={product.image} alt={product.name} />
+              <a className="product-image-link" href={`/store/${product.slug}`}>
+                <img src={product.image} alt={product.name} />
+              </a>
               <div className="product-info">
-                <h2>{product.name}</h2>
+                <h2>
+                  <a className="product-details-link" href={`/store/${product.slug}`}>
+                    {product.name}
+                  </a>
+                </h2>
                 <p>{product.description}</p>
                 <div className="price-row">
-                  <span className="price">{formatPrice(product.price)}</span>
-                <button
-                  className="product-add-button"
-                  type="button"
-                  onClick={() => {
-                    const updatedCart = [...readCart(), product];
-                    writeCart(updatedCart);
-                    setCart(updatedCart);
-                  }}
-                  aria-label={`Add ${product.name} to cart${quantity ? `, ${quantity} currently in cart` : ""}`}
-                >
-                  Add to cart{quantity > 0 && <span className="product-cart-count">{quantity}</span>}
-                </button>
+                  <button
+                    className="product-add-button"
+                    type="button"
+                    onClick={() => {
+                      const updatedCart = [...readCart(), product];
+                      writeCart(updatedCart);
+                      setCart(updatedCart);
+                    }}
+                    aria-label={`Add ${product.name} to cart${quantity ? `, ${quantity} currently in cart` : ""}`}
+                  >
+                    <span>Add to cart</span>
+                    <span className="product-add-price">{formatPrice(product.price)}</span>
+                    {quantity > 0 && <span className="product-cart-count">{quantity}</span>}
+                  </button>
                 </div>
               </div>
             </article>

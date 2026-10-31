@@ -1,0 +1,22 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import ProductDetailPage from "../../components/ProductDetailPage";
+import { products } from "../../data/products";
+
+export function getStaticPaths() {
+  return products.map((product) => ({
+    params: { slug: product.slug },
+    props: { product },
+  }));
+}
+
+const { product } = Astro.props;
+---
+
+<SiteLayout
+  title={`${product.name} | We Make Kids Club`}
+  description={product.description}
+  image={product.image}
+>
+  <ProductDetailPage product={product} client:load />
+</SiteLayout>

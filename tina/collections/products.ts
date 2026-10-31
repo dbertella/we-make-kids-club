@@ -33,6 +33,15 @@ export const ProductsCollection: Collection = {
           },
         },
         {
+          name: "slug",
+          label: "URL slug",
+          type: "string",
+          required: true,
+          ui: {
+            description: "Used in the product page URL, for example /store/diy-t-shirt-yarn-kit.",
+          },
+        },
+        {
           name: "name",
           label: "Name",
           type: "string",
@@ -58,6 +67,12 @@ export const ProductsCollection: Collection = {
           label: "Product image",
           type: "image",
           required: true,
+        },
+        {
+          name: "body",
+          label: "Product details",
+          type: "rich-text",
+          description: "Write the product details and add more images where useful.",
         },
       ],
     },

@@ -59,8 +59,10 @@ export default function CartPage() {
 
   return (
     <main className="cart-page">
+      <a className="store-back-link" href="/store">
+        &larr; Back to store
+      </a>
       <header className="cart-heading">
-        <p className="cart-eyebrow">We Make Kids Club Store</p>
         <h1>Your cart</h1>
         <p>{cart.length} {cart.length === 1 ? "item" : "items"}</p>
       </header>

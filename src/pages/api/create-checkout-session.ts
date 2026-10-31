@@ -55,7 +55,7 @@ export const POST: APIRoute = async ({ request }) => {
         quantity: 1,
       })),
       success_url: `${process.env.SITE_URL || 'https://wemakekidsclub.com'}/thank-you?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.SITE_URL || 'https://wemakekidsclub.com'}/store/cancelled`,
+      cancel_url: `${process.env.SITE_URL || 'https://wemakekidsclub.com'}/store/cart`,
     });
 
     return Response.json({ url: session.url });

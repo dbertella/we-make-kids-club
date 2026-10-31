@@ -1,7 +1,5 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
 import Page from "../../tina/pages/Page";
 import client from "../../tina/__generated__/client";
 import Form from "../components/Form.astro";
@@ -9,19 +7,10 @@ import Form from "../components/Form.astro";
 const data = await client.queries.page({ relativePath: "joinus.mdx" });
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead
-      title={data.data.page.seoTitle}
-      description={data.data.page.seoDescription}
-    />
-
-  </head>
-  <body>
-    <Header />
-    <Page {...data} client:tina />
-    <Form />
-    <Footer />
-  </body>
-</html>
+<SiteLayout
+  title={data.data.page.seoTitle}
+  description={data.data.page.seoDescription}
+>
+  <Page {...data} client:tina />
+  <Form />
+</SiteLayout>

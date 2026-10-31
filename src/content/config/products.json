@@ -2,45 +2,57 @@
   "products": [
     {
       "id": "prod-001",
+      "slug": "diy-t-shirt-yarn-kit",
       "name": "DIY T-Shirt Yarn Kit",
       "description": "Complete kit to make t-shirt yarn with the whole t-shirt. Includes instructions and materials.",
       "price": 2499,
-      "image": "/8.png"
+      "image": "/8.png",
+      "body": "This is a item description with images too\n\n![](/1-min.png)\n\nand this one too\n\n![](/2-min.png)\n\nand another picture here\n\n![](/5.webp)\n"
     },
     {
       "id": "prod-002",
+      "slug": "eco-fashion-upcycling-bag",
       "name": "Eco Fashion Upcycling Bag",
       "description": "Learn to upcycle old bags into fashion accessories. Perfect for kids and adults.",
       "price": 1999,
-      "image": "/Blog Header IMG-9.png"
+      "image": "/Blog Header IMG-9.png",
+      "body": ""
     },
     {
       "id": "prod-003",
+      "slug": "name-art-on-t-shirt-workshop",
       "name": "Name Art on T-Shirt Workshop",
       "description": "Freezer paper t-shirt printing kit for kids to create custom designs.",
       "price": 2999,
-      "image": "/3-min.png"
+      "image": "/3-min.png",
+      "body": ""
     },
     {
       "id": "prod-004",
+      "slug": "family-upcycling-event-kit",
       "name": "Family Upcycling Event Kit",
       "description": "Complete materials for creating memories through upcycling projects with family.",
       "price": 3999,
-      "image": "/what children learn in eco-fashion.png"
+      "image": "/what children learn in eco-fashion.png",
+      "body": ""
     },
     {
       "id": "prod-005",
+      "slug": "eco-fashion-starter-kit",
       "name": "Eco-Fashion Starter Kit",
       "description": "Everything needed to start your own eco-fashion journey with kids.",
       "price": 4999,
-      "image": "/wemakekidsclub toddler workshop.png"
+      "image": "/wemakekidsclub toddler workshop.png",
+      "body": ""
     },
     {
       "id": "prod-006",
+      "slug": "sewing-with-kids-starter-set",
       "name": "Sewing with Kids Starter Set",
       "description": "Basic sewing kit designed for kids to learn eco-friendly fashion.",
       "price": 3499,
-      "image": "/upcycled necklace from tshirt.png"
+      "image": "/upcycled necklace from tshirt.png",
+      "body": ""
     }
   ]
 }
