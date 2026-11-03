@@ -50,7 +50,7 @@ export default function StorePage({ products }: StorePageProps) {
                     {product.name}
                   </a>
                 </h2>
-                <p>{product.description}</p>
+                <p>{product.shortDescription}</p>
                 <div className="price-row">
                   <button
                     className="product-add-button"

@@ -19,13 +19,6 @@ export const ProductsCollection: Collection = {
       description: "Keep this ID stable so existing cart items remain valid.",
     },
     {
-      name: "slug",
-      label: "URL slug",
-      type: "string",
-      required: true,
-      description: "Used in the product page URL.",
-    },
-    {
       name: "name",
       label: "Name",
       type: "string",
@@ -33,8 +26,8 @@ export const ProductsCollection: Collection = {
       isTitle: true,
     },
     {
-      name: "description",
-      label: "Description",
+      name: "shortDescription",
+      label: "Short description",
       type: "string",
       required: true,
       ui: {

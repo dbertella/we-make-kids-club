@@ -1,11 +1,12 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import SiteLayout from "../layouts/SiteLayout.astro";
 import StorePage from "../components/StorePage.tsx";
-import { toProduct, type ProductContent } from "../data/products";
+import { toProduct } from "../data/products";
 
 const products = (await getCollection("products")).map(
-  (entry: { data: ProductContent }) => toProduct(entry.data),
+  (entry: CollectionEntry<"products">) =>
+    toProduct({ ...entry.data, slug: entry.id }),
 );
 ---
 
