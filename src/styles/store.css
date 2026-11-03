@@ -34,6 +34,15 @@
   min-width: 0;
 }
 
+.products-grid--single {
+  grid-template-columns: minmax(0, 360px);
+  justify-content: center;
+}
+
+.products-grid--single .product-card img {
+  height: 180px;
+}
+
 .product-card {
   display: flex;
   min-width: 0;

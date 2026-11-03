@@ -1,8 +1,8 @@
-import { products, type Product } from "../data/products";
+import type { Product } from "../data/products";
 
 const CART_STORAGE_KEY = "wemakekidsclub-cart";
 
-export function readCart(): Product[] {
+export function readCart(products: Product[]): Product[] {
   try {
     const storedIds: unknown = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) ?? "[]");
     if (!Array.isArray(storedIds)) return [];

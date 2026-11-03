@@ -1,7 +1,20 @@
-import productsConfig from "../content/config/products.json";
 import type { TinaMarkdownContent } from "tinacms/dist/rich-text";
 
-export const products = productsConfig.products;
-export type Product = Omit<(typeof products)[number], "body"> & {
-  body?: TinaMarkdownContent | TinaMarkdownContent[] | string;
-};
+export interface Product {
+  id: string;
+  slug: string;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  body?: TinaMarkdownContent | TinaMarkdownContent[];
+}
+
+export interface ProductContent extends Omit<Product, "id"> {
+  productId: string;
+}
+
+export function toProduct(product: ProductContent): Product {
+  const { productId, ...details } = product;
+  return { ...details, id: productId };
+}

@@ -1,16 +1,31 @@
 ---
+import { getCollection, type CollectionEntry } from "astro:content";
 import SiteLayout from "../../layouts/SiteLayout.astro";
 import ProductDetailPage from "../../components/ProductDetailPage";
-import { products } from "../../data/products";
+import client from "../../../tina/__generated__/client";
+import { toProduct } from "../../data/products";
 
-export function getStaticPaths() {
-  return products.map((product) => ({
-    params: { slug: product.slug },
-    props: { product },
+export async function getStaticPaths() {
+  const productEntries = await getCollection("products");
+  const products = productEntries.map(
+    (entry: CollectionEntry<"products">) => toProduct(entry.data),
+  );
+
+  return productEntries.map((entry: CollectionEntry<"products">, index: number) => ({
+    params: { slug: products[index].slug },
+    props: {
+      product: products[index],
+      products,
+      getTinaProps: async () =>
+        client.queries.products({
+          relativePath: entry.data.tinaInfo.relativePath,
+        }),
+    },
   }));
 }
 
-const { product } = Astro.props;
+const { product, products, getTinaProps } = Astro.props;
+const tinaProps = await getTinaProps();
 ---
 
 <SiteLayout
@@ -18,5 +33,5 @@ const { product } = Astro.props;
   description={product.description}
   image={product.image}
 >
-  <ProductDetailPage product={product} client:load />
+  <ProductDetailPage {...tinaProps} products={products} client:tina />
 </SiteLayout>

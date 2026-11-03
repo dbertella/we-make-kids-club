@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
+import { getCollection } from 'astro:content';
 import Stripe from 'stripe';
-import { products } from '../../data/products';
+import { toProduct } from '../../data/products';
 
 export const prerender = false;
 
@@ -8,6 +9,7 @@ const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY);
 
 export const POST: APIRoute = async ({ request }) => {
   try {
+    const products = (await getCollection('products')).map(({ data }) => toProduct(data));
     let body: { lineItems?: unknown };
     try {
       body = await request.json();
@@ -43,6 +45,9 @@ export const POST: APIRoute = async ({ request }) => {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',
+      shipping_address_collection: {
+        allowed_countries: ['GB'],
+      },
       line_items: validCatalogItems.map((item) => ({
         price_data: {
           currency: 'gbp',

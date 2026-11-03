@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
-import { products, type Product } from "../data/products";
+import type { Product } from "../data/products";
 import { readCart, writeCart } from "../utils/cart";
+
+interface StorePageProps {
+  products: Product[];
+}
 
 const formatPrice = (priceInPence: number) =>
   (priceInPence / 100).toLocaleString("en-GB", {
@@ -8,11 +12,11 @@ const formatPrice = (priceInPence: number) =>
     currency: "GBP",
   });
 
-export default function StorePage() {
+export default function StorePage({ products }: StorePageProps) {
   const [cart, setCart] = useState<Product[]>([]);
 
   useEffect(() => {
-    const syncCart = () => setCart(readCart());
+    const syncCart = () => setCart(readCart(products));
     syncCart();
     window.addEventListener("wmkc:cart-updated", syncCart);
     window.addEventListener("storage", syncCart);
@@ -20,7 +24,7 @@ export default function StorePage() {
       window.removeEventListener("wmkc:cart-updated", syncCart);
       window.removeEventListener("storage", syncCart);
     };
-  }, []);
+  }, [products]);
 
   return (
     <main className="store">
@@ -29,7 +33,10 @@ export default function StorePage() {
         <p>Support sustainable kids' activities with every purchase.</p>
       </header>
 
-      <section className="products-grid" aria-label="Products">
+      <section
+        className={`products-grid${products.length === 1 ? " products-grid--single" : ""}`}
+        aria-label="Products"
+      >
         {products.map((product) => {
           const quantity = cart.filter((item) => item.id === product.id).length;
           return (
@@ -49,7 +56,7 @@ export default function StorePage() {
                     className="product-add-button"
                     type="button"
                     onClick={() => {
-                      const updatedCart = [...readCart(), product];
+                      const updatedCart = [...readCart(products), product];
                       writeCart(updatedCart);
                       setCart(updatedCart);
                     }}

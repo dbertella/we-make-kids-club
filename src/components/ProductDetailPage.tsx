@@ -1,34 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
-import { type Product } from "../data/products";
+import { tinaField, useTina } from "tinacms/dist/react";
+import type { ProductsQuery, ProductsQueryVariables } from "../../tina/__generated__/types";
+import { toProduct, type Product } from "../data/products";
 import { readCart, writeCart } from "../utils/cart";
 
 interface ProductDetailPageProps {
-  product: Product;
-}
-
-function renderProductDetails(body: string) {
-  return body
-    .trim()
-    .split(/\n\s*\n/)
-    .filter(Boolean)
-    .map((block, index) => {
-      const image = block.trim().match(/^!\[([^\]]*)\]\(([^)\s]+)\)$/);
-      if (image && (image[2].startsWith("/") || /^https:\/\//i.test(image[2]))) {
-        return <img key={index} src={image[2]} alt={image[1]} />;
-      }
-
-      return (
-        <p key={index}>
-          {block.split("\n").map((line, lineIndex) => (
-            <span key={lineIndex}>
-              {lineIndex > 0 && <br />}
-              {line}
-            </span>
-          ))}
-        </p>
-      );
-    });
+  products: Product[];
+  variables: ProductsQueryVariables;
+  data: ProductsQuery;
+  query: string;
 }
 
 const formatPrice = (priceInPence: number) =>
@@ -37,12 +18,27 @@ const formatPrice = (priceInPence: number) =>
     currency: "GBP",
   });
 
-export default function ProductDetailPage({ product }: ProductDetailPageProps) {
+export default function ProductDetailPage(props: ProductDetailPageProps) {
+  const { data } = useTina({
+    query: props.query,
+    variables: props.variables,
+    data: props.data,
+  });
+  const productContent = data.products;
+  const { product, products } = useMemo(() => {
+    const product = toProduct(productContent);
+    return {
+      product,
+      products: props.products.map((item) =>
+        item.id === product.id ? product : item,
+      ),
+    };
+  }, [productContent, props.products]);
   const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {
     const syncCart = () =>
-      setQuantity(readCart().filter((item) => item.id === product.id).length);
+      setQuantity(readCart(products).filter((item) => item.id === product.id).length);
     syncCart();
     window.addEventListener("wmkc:cart-updated", syncCart);
     window.addEventListener("storage", syncCart);
@@ -50,7 +46,7 @@ export default function ProductDetailPage({ product }: ProductDetailPageProps) {
       window.removeEventListener("wmkc:cart-updated", syncCart);
       window.removeEventListener("storage", syncCart);
     };
-  }, [product.id]);
+  }, [product.id, products]);
 
   return (
     <main className="product-detail">
@@ -58,12 +54,18 @@ export default function ProductDetailPage({ product }: ProductDetailPageProps) {
         &larr; Back to store
       </a>
       <article className="product-detail-article">
-        <h1>{product.name}</h1>
-        <img className="article-hero-image" src={product.image} alt={product.name} />
-        <div className="prose">
-          {typeof product.body === "string" && product.body.trim() ? (
-            renderProductDetails(product.body)
-          ) : product.body ? (
+        <h1 data-tina-field={tinaField(productContent, "name")}>{product.name}</h1>
+        <img
+          className="article-hero-image"
+          src={product.image}
+          alt={product.name}
+          data-tina-field={tinaField(productContent, "image")}
+        />
+        <p data-tina-field={tinaField(productContent, "description")}>
+          {product.description}
+        </p>
+        <div className="prose" data-tina-field={tinaField(productContent, "body")}>
+          {product.body ? (
             <TinaMarkdown content={product.body} />
           ) : (
             <p>{product.description}</p>
@@ -73,11 +75,16 @@ export default function ProductDetailPage({ product }: ProductDetailPageProps) {
           <button
             className="product-detail-add-button"
             type="button"
-            onClick={() => writeCart([...readCart(), product])}
+            onClick={() => writeCart([...readCart(products), product])}
             aria-label={`Add ${product.name} to cart${quantity ? `, ${quantity} currently in cart` : ""}`}
           >
             <span>Add to cart</span>
-            <span className="product-add-price">{formatPrice(product.price)}</span>
+            <span
+              className="product-add-price"
+              data-tina-field={tinaField(productContent, "price")}
+            >
+              {formatPrice(product.price)}
+            </span>
             {quantity > 0 && <span className="product-cart-count">{quantity}</span>}
           </button>
         </footer>

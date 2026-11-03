@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { readCart, writeCart, type Product } from "../utils/cart";
+import type { Product } from "../data/products";
+import { readCart, writeCart } from "../utils/cart";
 
 const formatPrice = (priceInPence: number) =>
   (priceInPence / 100).toLocaleString("en-GB", {
@@ -7,13 +8,17 @@ const formatPrice = (priceInPence: number) =>
     currency: "GBP",
   });
 
-export default function CartPage() {
+interface CartPageProps {
+  products: Product[];
+}
+
+export default function CartPage({ products }: CartPageProps) {
   const [cart, setCart] = useState<Product[]>([]);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const syncCart = () => setCart(readCart());
+    const syncCart = () => setCart(readCart(products));
     syncCart();
     window.addEventListener("wmkc:cart-updated", syncCart);
     window.addEventListener("storage", syncCart);
@@ -21,7 +26,7 @@ export default function CartPage() {
       window.removeEventListener("wmkc:cart-updated", syncCart);
       window.removeEventListener("storage", syncCart);
     };
-  }, []);
+  }, [products]);
 
   const updateCart = (updatedCart: Product[]) => {
     setCart(updatedCart);

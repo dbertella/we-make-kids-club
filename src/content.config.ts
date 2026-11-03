@@ -37,6 +37,39 @@ const news = defineCollection({
   }),
 });
 
+const products = defineCollection({
+  loader: async () => {
+    const productsResponse = await client.queries.productsConnection();
+
+    return productsResponse.data.productsConnection.edges
+      ?.filter((product) => !!product)
+      .map((product) => {
+        const node = product?.node;
+
+        return {
+          ...node,
+          id: node?._sys.relativePath.replace(/\.mdx?$/, ""),
+          tinaInfo: node?._sys,
+        };
+      });
+  },
+  schema: z.object({
+    tinaInfo: z.object({
+      filename: z.string(),
+      basename: z.string(),
+      path: z.string(),
+      relativePath: z.string(),
+    }),
+    productId: z.string(),
+    slug: z.string(),
+    name: z.string(),
+    description: z.string(),
+    price: z.number(),
+    image: z.string(),
+    body: z.any().optional(),
+  }),
+});
+
 const page = defineCollection({
   loader: async () => {
     const postsResponse = await client.queries.pageConnection();
@@ -67,4 +100,4 @@ const page = defineCollection({
     body: z.any(),
   }),
 })
-export const collections = { news, page };
+export const collections = { news, page, products };
