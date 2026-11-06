@@ -14,6 +14,10 @@ const today = new Date();
       })
     }
   </div>
+  <nav class="policy-links" aria-label="Policies">
+    <a href="/shipping-policy">Shipping Policy</a>
+    <a href="/refund-policy">Refund Policy</a>
+  </nav>
 </footer>
 <style>
   footer {
@@ -27,5 +31,15 @@ const today = new Date();
     justify-content: center;
     gap: 1em;
     margin-top: 1em;
+  }
+  .policy-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em;
+    margin-top: 1.5em;
+  }
+  .policy-links a {
+    color: inherit;
   }
 </style>

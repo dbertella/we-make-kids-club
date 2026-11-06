@@ -1,0 +1,18 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import StorePage from "../components/StorePage.tsx";
+import { toProduct } from "../data/products";
+
+const products = (await getCollection("products")).map(
+  (entry: CollectionEntry<"products">) =>
+    toProduct({ ...entry.data, slug: entry.id }),
+);
+---
+
+<SiteLayout
+  title="Eco-Friendly Crafts & Workshops Store | We Make Kids Club"
+  description="Shop eco-friendly craft kits and workshops for kids from We Make Kids Club."
+>
+  <StorePage products={products} client:load />
+</SiteLayout>

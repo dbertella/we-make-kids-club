@@ -1,119 +1,143 @@
 ---
-import BaseHead from "../../components/BaseHead.astro";
-import Header from "../../components/Header.astro";
-import Footer from "../../components/Footer.astro";
+import SiteLayout from "../../layouts/SiteLayout.astro";
 import config from "../../content/config/config.json";
 import { getCollection } from "astro:content";
-import FormattedDate from "../../components/FormattedDate.astro";
 
 const posts = (await getCollection("news")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead title={config.seo.title} description={config.seo.description} />
+<SiteLayout title={config.seo.title} description={config.seo.description}>
+  <main class="news-index">
+    <h1 class="news-heading">Latest news &amp; ideas</h1>
+    <section aria-label="Latest news">
+      <ul>
+        {
+          posts.map((post) => (
+            <li>
+              <a href={`/news/${post.id}`}>
+                <img
+                  width={720}
+                  height={360}
+                  src={post.data.heroImage}
+                  alt=""
+                />
+                <p class="date">
+                  <strong>{post.data.category}</strong>
+                </p>
+                <h2 class="title">{post.data.title}</h2>
+                <p class="gray-dark">{post.data.description}</p>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </main>
+</SiteLayout>
 
-    <style>
-      main {
-        width: 960px;
-      }
-      ul {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-      }
-      ul li {
-        width: calc(50% - 1rem);
-      }
-      ul li * {
-        text-decoration: none;
-        transition: 0.2s ease;
-      }
-      ul li:first-child {
-        width: 100%;
-        margin-bottom: 1rem;
-        text-align: center;
-      }
-      ul li:first-child img {
-        width: 100%;
-      }
-      ul li:first-child .title {
-        font-size: 2.369rem;
-      }
-      ul li img {
-        margin-bottom: 0.5rem;
-        border-radius: 12px;
-      }
-      ul li a {
-        display: block;
-      }
-      .title {
-        margin: 0;
-        line-height: 1;
-        font-family: var(--header-font);
-        color: rgb(var(--secondary));
-      }
-      .date {
-        margin: 0;
-        color: rgb(var(--gray));
-      }
-      ul li a:hover .title,
-      ul li a:hover .date {
-        color: rgb(var(--secondary));
-      }
-      ul a:hover img {
-        box-shadow: var(--box-shadow);
-      }
-      @media (max-width: 720px) {
-        ul {
-          gap: 0.5em;
-        }
-        ul li {
-          width: 100%;
-          text-align: center;
-        }
-        ul li:first-child {
-          margin-bottom: 0;
-        }
-        ul li:first-child .title {
-          font-size: 1.563em;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <Header />
-    <main>
-      <section>
-        <ul>
-          {
-            posts.map((post) => (
-              <li>
-                <a href={`/news/${post.id}`}>
-                  <img
-                    width={720}
-                    height={360}
-                    src={post.data.heroImage}
-                    alt=""
-                  />
-                  <p class="date">
-                    <strong>{post.data.category}</strong>
-                  </p>
-                  <h4 class="title">{post.data.title}</h4>
-                  <p class="gray-dark">{post.data.description}</p>
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </section>
-    </main>
-    <Footer />
-  </body>
-</html>
+<style>
+  .news-index {
+    width: 100%;
+    max-width: 1120px;
+  }
+
+  ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  ul li {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    transition:
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  ul li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(var(--black), 0.1);
+  }
+
+  ul li:first-child {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+
+  ul li * {
+    text-decoration: none;
+  }
+
+  ul li a {
+    display: block;
+    height: 100%;
+    padding-bottom: 1rem;
+  }
+
+  ul li img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    margin-bottom: 0.5rem;
+    border-radius: 0;
+  }
+
+  .title {
+    margin: 0.5rem 1rem;
+    font-size: clamp(1.25rem, 2.4vw, 1.7rem);
+    line-height: 1.2;
+    font-family: var(--header-font);
+    color: var(--secondary);
+  }
+
+  .date {
+    margin: 0 1rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  .gray-dark {
+    margin: 0.5rem 1rem 0;
+  }
+
+  ul li:first-child .title {
+    font-size: clamp(1.75rem, 4vw, 2.4rem);
+  }
+
+  ul li a:hover .title,
+  ul li a:focus-visible .title {
+    color: rgb(var(--black));
+  }
+
+  ul li a:focus-visible {
+    outline: 3px solid var(--secondary);
+    outline-offset: -3px;
+  }
+
+  @media (max-width: 720px) {
+    ul {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    ul li:first-child {
+      grid-column: auto;
+      text-align: left;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    ul li {
+      transition: none;
+    }
+  }
+</style>
