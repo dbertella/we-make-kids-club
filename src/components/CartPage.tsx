@@ -33,6 +33,28 @@ export default function CartPage({ products }: CartPageProps) {
     writeCart(updatedCart);
   };
 
+  const cartItems = cart.reduce<{ product: Product; quantity: number }[]>((items, product) => {
+    const existingItem = items.find((item) => item.product.id === product.id);
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      items.push({ product, quantity: 1 });
+    }
+    return items;
+  }, []);
+
+  const changeQuantity = (product: Product, change: number) => {
+    if (change > 0) {
+      updateCart([...cart, product]);
+      return;
+    }
+
+    const index = cart.findIndex((item) => item.id === product.id);
+    if (index >= 0) {
+      updateCart(cart.filter((_, itemIndex) => itemIndex !== index));
+    }
+  };
+
   const handleCheckout = async () => {
     if (cart.length === 0 || isCheckingOut) return;
 
@@ -81,18 +103,36 @@ export default function CartPage({ products }: CartPageProps) {
       ) : (
         <section className="cart-content" aria-label="Cart items">
           <ul className="cart-items">
-            {cart.map((product, index) => (
-              <li className="cart-item" key={`${product.id}-${index}`}>
+            {cartItems.map(({ product, quantity }) => (
+              <li className="cart-item" key={product.id}>
                 <img src={product.image} alt="" />
                 <div className="cart-item-info">
                   <h2>{product.name}</h2>
                   <p>{formatPrice(product.price)}</p>
+                  <div className="cart-quantity" role="group" aria-label={`${product.name} quantity`}>
+                    <button
+                      type="button"
+                      aria-label={`Decrease ${product.name} quantity`}
+                      disabled={quantity === 1}
+                      onClick={() => changeQuantity(product, -1)}
+                    >
+                      &minus;
+                    </button>
+                    <span aria-live="polite">{quantity}</span>
+                    <button
+                      type="button"
+                      aria-label={`Increase ${product.name} quantity`}
+                      onClick={() => changeQuantity(product, 1)}
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
                 <button
                   className="cart-remove"
                   type="button"
                   aria-label={`Remove ${product.name} from cart`}
-                  onClick={() => updateCart(cart.filter((_, itemIndex) => itemIndex !== index))}
+                  onClick={() => updateCart(cart.filter((item) => item.id !== product.id))}
                 >
                   Remove
                 </button>
