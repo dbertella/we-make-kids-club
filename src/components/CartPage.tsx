@@ -8,9 +8,24 @@ const formatPrice = (priceInPence: number) =>
     currency: "GBP",
   });
 
+const CHECKOUT_SESSION_KEY = "wemakekidsclub-checkout-session";
+
 interface CartPageProps {
   products: Product[];
 }
+
+const isCheckoutCartItem = (
+  item: unknown,
+): item is { productId: string; quantity: number } =>
+  typeof item === "object" &&
+  item !== null &&
+  "productId" in item &&
+  typeof item.productId === "string" &&
+  "quantity" in item &&
+  typeof item.quantity === "number" &&
+  Number.isInteger(item.quantity) &&
+  item.quantity >= 1 &&
+  item.quantity <= 10;
 
 export default function CartPage({ products }: CartPageProps) {
   const [cart, setCart] = useState<Product[]>([]);
@@ -26,6 +41,65 @@ export default function CartPage({ products }: CartPageProps) {
       window.removeEventListener("wmkc:cart-updated", syncCart);
       window.removeEventListener("storage", syncCart);
     };
+  }, [products]);
+
+  useEffect(() => {
+    let syncInProgress = false;
+    const syncCheckoutCart = async () => {
+      const sessionId = localStorage.getItem(CHECKOUT_SESSION_KEY);
+      if (!sessionId || syncInProgress) return;
+      syncInProgress = true;
+
+      try {
+        const response = await fetch(
+          `/api/sync-checkout-cart?session_id=${encodeURIComponent(sessionId)}`,
+          { cache: "no-store" },
+        );
+        const data: unknown = await response.json();
+
+        if (!response.ok) {
+          const message =
+            typeof data === "object" &&
+            data !== null &&
+            "error" in data &&
+            typeof data.error === "string"
+              ? data.error
+              : "Could not sync your cart from checkout.";
+          throw new Error(message);
+        }
+        if (
+          typeof data !== "object" ||
+          data === null ||
+          !("items" in data) ||
+          !Array.isArray(data.items) ||
+          !data.items.every(isCheckoutCartItem)
+        ) {
+          throw new Error("Checkout returned invalid cart details.");
+        }
+
+        const syncedCart = data.items.flatMap(({ productId, quantity }) => {
+          const product = products.find((candidate) => candidate.id === productId);
+          if (!product) throw new Error("A product from checkout is no longer available.");
+          return Array.from({ length: quantity }, () => product);
+        });
+
+        setCart(syncedCart);
+        writeCart(syncedCart);
+        localStorage.removeItem(CHECKOUT_SESSION_KEY);
+      } catch (syncError: unknown) {
+        setError(
+          syncError instanceof Error
+            ? syncError.message
+            : "Could not sync your cart from checkout.",
+        );
+      } finally {
+        syncInProgress = false;
+      }
+    };
+
+    void syncCheckoutCart();
+    window.addEventListener("pageshow", syncCheckoutCart);
+    return () => window.removeEventListener("pageshow", syncCheckoutCart);
   }, [products]);
 
   const updateCart = (updatedCart: Product[]) => {
@@ -66,15 +140,21 @@ export default function CartPage({ products }: CartPageProps) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          lineItems: cart.map((product) => ({ productId: product.id })),
+          lineItems: cartItems.map(({ product, quantity }) => ({
+            productId: product.id,
+            quantity,
+          })),
         }),
       });
-      const data = (await response.json().catch(() => null)) as { url?: string; error?: string } | null;
+      const data = (await response.json().catch(() => null)) as
+        | { url?: string; sessionId?: string; error?: string }
+        | null;
 
-      if (!response.ok || !data?.url) {
+      if (!response.ok || !data?.url || !data.sessionId) {
         throw new Error(data?.error ?? `Checkout could not be started (HTTP ${response.status}).`);
       }
 
+      localStorage.setItem(CHECKOUT_SESSION_KEY, data.sessionId);
       window.location.assign(data.url);
     } catch (checkoutError: unknown) {
       setError(checkoutError instanceof Error ? checkoutError.message : "Checkout could not be started.");
