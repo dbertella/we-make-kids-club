@@ -5,24 +5,24 @@
  */
 
 :root {
-  --primary: #242054;
-  --secondary: #4b4bee;
-  --orange: 251, 176, 64;
-  --yellow: 255, 221, 89;
-  --background-cream: #faf6f1;
-  --surface: #fff;
-  --border: #e1e6df;
-  --text-muted: #626262;
+  --primary: #2c4240;
+  --secondary: #4f7b76;
+  --orange: 192, 98, 60;
+  --yellow: 233, 201, 180;
+  --background-cream: #f2ede4;
+  --surface: #ffffff;
+  --border: #e9c9b4;
+  --text-muted: #5f6b68;
   --error: #a32121;
-  --primary-font: "Poppins", serif;
-  --header-font: "Cherry Bomb One", serif;
-  --black: 15, 18, 25;
-  --gray: 96, 115, 159;
-  --gray-light: 229, 233, 240;
-  --gray-dark: 34, 41, 57;
-  --gray-gradient: rgba(75, 75, 238, 50%), var(--background-cream);
+  --primary-font: "Work Sans", sans-serif;
+  --header-font: "Fascinate", Georgia, serif;
+  --black: 44, 66, 64;
+  --gray: 95, 107, 104;
+  --gray-light: 233, 201, 180;
+  --gray-dark: 44, 66, 64;
+  --gray-gradient: rgba(79, 123, 118, 50%), var(--background-cream);
   --box-shadow: 0 2px 6px rgba(var(--gray), 25%),
-    0 8px 24px rgba(var(--gray), 33%), 0 16px 32px rgba(var(--gray), 33%);
+    0 8px 24px rgba(var(--gray), 20%), 0 16px 32px rgba(var(--gray), 15%);
 }
 
 @keyframes fadeOut {
@@ -94,7 +94,7 @@ article {
   margin: auto;
   box-sizing: border-box;
   h1 {
-    font-size: 2.52rem;
+    font-size: clamp(2rem, 6vw, 3rem);
     font-family: var(--header-font);
     font-weight: 400;
     font-style: normal;
@@ -131,13 +131,11 @@ h5,
 h6 {
   margin: 2rem 0 1rem 0;
   color: rgb(var(--black));
+  font-family: var(--header-font);
   line-height: 1.2;
 }
 h1 {
-  font-size: 3.052rem;
-  font-family: var(--header-font);
-  font-weight: 400;
-  font-style: normal;
+  font-size: clamp(2rem, 6vw, 3rem);
   color: var(--secondary);
   text-align: center;
   margin-bottom: 3rem;
@@ -255,7 +253,7 @@ hr {
 }
 
 .logo {
-  width: 150px;
+  width: 180px;
 }
 .primary-font {
   font-family: var(--primary-font);
@@ -271,11 +269,14 @@ hr {
   h1 {
     color: var(--secondary);
     font-size: clamp(2.2rem, 8vw, 3.6rem);
+    font-weight: 700;
     margin: 0;
   }
   h2 {
-    color: var(--primary);
+    color: var(--text-muted);
     font-size: clamp(1.25rem, 4vw, 2rem);
+    font-family: var(--primary-font);
+    font-weight: 400;
     margin: 0.5rem 0 1.5rem;
   }
 }
@@ -339,19 +340,18 @@ hr {
   background-color: rgb(var(--orange));
   color: #fff;
   text-decoration: none;
-  font-weight: 800;
-  font-size: clamp(1rem, 4vw, 1.5rem);
-  border-radius: 5px;
+  font-weight: 700;
+  font-size: clamp(1rem, 4vw, 1.25rem);
+  border-radius: 8px;
   transition: all 0.3s ease;
   border: none;
   box-shadow: 0 4px 6px rgba(var(--orange), 0.25);
-  text-transform: uppercase;
   letter-spacing: 0.5px;
   cursor: pointer;
 }
 
 .button:hover {
-  background-color: rgb(255, 153, 0);
+  background-color: var(--primary);
   transform: translateY(-2px);
   box-shadow: 0 6px 8px rgba(var(--orange), 0.3);
   color: #fff;
@@ -359,7 +359,7 @@ hr {
 
 .button:active {
   transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(251, 176, 64, 0.2);
+  box-shadow: 0 2px 4px rgba(var(--orange), 0.2);
   color: #fff;
 }
 

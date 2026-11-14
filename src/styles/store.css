@@ -67,7 +67,7 @@
   width: 100%;
   height: 220px;
   object-fit: cover;
-  background: #f3f5f2;
+  background: var(--background-cream);
 }
 
 .product-image-link {
@@ -135,7 +135,7 @@
 .cart-checkout:hover:not(:disabled),
 .cart-primary-link:hover,
 .product-detail-add-button:hover {
-  background: rgb(255, 153, 0);
+  background: var(--primary);
 }
 
 .store .product-add-button {
@@ -236,7 +236,7 @@
   aspect-ratio: 1;
   border-radius: 8px;
   object-fit: cover;
-  background: #f3f5f2;
+  background: var(--background-cream);
 }
 
 .cart-item-info h2 {

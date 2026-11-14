@@ -78,7 +78,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
         </p>
         <p style="font-size:1rem;font-family:roboto,sans-serif;">
           <span>Thank you for subscribing to </span>
-          <b>WE MAKE kids club</b>
+          <b>Eco-Fashion Lab</b>
           <span>—where creativity meets sustainability! <img style="width:1rem;height:1rem" data-emoji="🌿" class="an1" alt="🌿" aria-label="🌿" draggable="false" src="https://fonts.gstatic.com/s/e/notoemoji/16.0/1f33f/72.png" loading="lazy">
             <img style="width:1rem;height:1rem" data-emoji="🎨" class="an1" alt="🎨" aria-label="🎨" draggable="false" src="https://fonts.gstatic.com/s/e/notoemoji/16.0/1f3a8/72.png" loading="lazy">
             <img style="width:1rem;height:1rem" data-emoji="♻️" class="an1" alt="♻️" aria-label="♻️" draggable="false" src="https://fonts.gstatic.com/s/e/notoemoji/16.0/267b_fe0f/72.png" loading="lazy">
@@ -134,12 +134,12 @@ export const POST: APIRoute = async ({ request, redirect }) => {
         <span>
           <br>
         </span>
-        <span>Founder of WE MAKE kids club</span>
+        <span>Founder of Eco-Fashion Lab</span>
       </div>
      `;
     await sendEmail({
       to: email,
-      subject: "Thanks for joining WE MAKE Kids Club!",
+      subject: "Thanks for joining Eco-Fashion Lab!",
       html,
     });
   } catch (error) {

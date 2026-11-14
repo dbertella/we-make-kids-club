@@ -25,7 +25,7 @@ const HomePage = (props: Props) => {
     <>
       <header className="header">
         <div className="header-text">
-          <h1>WE MAKE KIDS CLUB</h1>
+          <h1>Eco-Fashion Lab</h1>
           <h2>Eco-fashion workshops for everyone</h2>
         
         </div>

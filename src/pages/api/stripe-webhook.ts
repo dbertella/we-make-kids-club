@@ -97,7 +97,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     await sendEmail({
       to: customerEmail,
-      subject: "Your We Make Kids Club order is confirmed",
+      subject: "Your Eco-Fashion Lab order is confirmed",
       headers: { "Resend-Idempotency-Key": `order-confirmation/${session.id}` },
       html: `
         <div style="max-width:600px;margin:0 auto;font-family:Arial,sans-serif;color:#252525;line-height:1.6">
@@ -113,7 +113,7 @@ export const POST: APIRoute = async ({ request }) => {
           <p>Free UK delivery. Orders are usually dispatched within 3–5 working days (Monday to Friday, excluding UK bank holidays). Estimated delivery is 2–4 working days after dispatch.</p>
           <p style="margin-top:24px">Your payment reference is <strong>${escapeHtml(session.id)}</strong>.</p>
           <p>We'll be in touch with any updates about your order.</p>
-          <p>We Make Kids Club</p>
+          <p>Eco-Fashion Lab</p>
         </div>
       `,
     });
