@@ -1,0 +1,147 @@
+---
+import Stripe from "stripe";
+import SiteLayout from "../layouts/SiteLayout.astro";
+import {
+  CHECKOUT_ACCESS_COOKIE,
+  verifyCheckoutAccessToken,
+} from "../utils/checkout-session-access";
+
+export const prerender = false;
+Astro.response.headers.set("Cache-Control", "private, no-store");
+
+const sessionId = Astro.url.searchParams.get("session_id");
+let isPaid = false;
+let order: Stripe.Checkout.Session | null = null;
+const hasSessionAccess = verifyCheckoutAccessToken(
+  Astro.cookies.get(CHECKOUT_ACCESS_COOKIE)?.value,
+  sessionId ?? "",
+  import.meta.env.STRIPE_SECRET_KEY,
+);
+
+if (sessionId && hasSessionAccess) {
+  try {
+    const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY);
+    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+      expand: ["line_items"],
+    });
+    isPaid = session.payment_status === "paid";
+    if (isPaid) order = session;
+  } catch (error) {
+    console.error("Could not verify Stripe Checkout Session:", error);
+  }
+}
+
+const shippingAddress = order?.shipping_details?.address ?? order?.customer_details?.address;
+const addressLines = shippingAddress
+  ? [
+      shippingAddress.line1,
+      shippingAddress.line2,
+      shippingAddress.city,
+      shippingAddress.state,
+      shippingAddress.postal_code,
+      shippingAddress.country,
+    ].filter((line): line is string => Boolean(line))
+  : [];
+const customerName = order?.shipping_details?.name ?? order?.customer_details?.name;
+const customerEmail = order?.customer_details?.email ?? order?.customer_email;
+const customerPhone = order?.customer_details?.phone;
+const supportEmail = "wemakekidsclub@gmail.com";
+const formatAmount = (amount: number, currency: string) =>
+  new Intl.NumberFormat("en-GB", {
+    style: "currency",
+    currency: currency.toUpperCase(),
+  }).format(amount / 100);
+---
+
+<SiteLayout
+  title={isPaid ? "Thank You — We Make Kids Club" : "Payment Not Confirmed — We Make Kids Club"}
+  description={isPaid ? "Your order is confirmed. Thank you for shopping with us." : "We could not confirm your payment. Please contact us or return to the store."}
+>
+  <main class="checkout-result" data-payment-status={isPaid ? "paid" : "unconfirmed"}>
+    <a class="store-back-link" href="/store">&larr; Back to store</a>
+    <div class:list={["result-mark", { "result-mark-error": !isPaid }]} aria-hidden="true">
+      {isPaid ? "✓" : "!"}
+    </div>
+    <h1>{isPaid ? "Order confirmed" : "Payment not confirmed"}</h1>
+    <p>
+      {isPaid
+        ? "Thank you for your purchase. Your payment was confirmed, and your order is being processed."
+        : "We couldn't confirm a completed payment. Please check your Stripe confirmation email or contact us if you were charged."}
+    </p>
+    {isPaid && <p>Thank you for supporting handmade, low-waste making.</p>}
+    {isPaid && order && (
+      <section class="order-details" aria-label="Order details">
+        <div class="order-detail-card">
+          <h2>Order number</h2>
+          <p class="session-id"><code>{order.id}</code></p>
+        </div>
+
+        <div class="order-detail-card">
+          <h2>Items bought</h2>
+          {order.line_items?.data.length ? (
+            <>
+              <ul class="order-items">
+                {order.line_items.data.map((item) => (
+                  <li>
+                    <span>{item.description ?? "Store item"} × {item.quantity ?? 1}</span>
+                    {item.amount_total != null && (
+                      <strong>{formatAmount(item.amount_total, order.currency ?? "gbp")}</strong>
+                    )}
+                  </li>
+                ))}
+              </ul>
+              {order.amount_total != null && (
+                <p class="order-total">
+                  <span>Total paid</span>
+                  <strong>{formatAmount(order.amount_total, order.currency ?? "gbp")}</strong>
+                </p>
+              )}
+            </>
+          ) : (
+            <p>See your confirmation email for the items in your order.</p>
+          )}
+        </div>
+
+        <div class="order-detail-card">
+          <h2>Delivery address</h2>
+          {customerName && <p>{customerName}</p>}
+          {addressLines.length ? (
+            <address>{addressLines.map((line) => <span>{line}<br /></span>)}</address>
+          ) : (
+            <p>Check your confirmation email for your delivery address.</p>
+          )}
+        </div>
+
+        <div class="order-detail-card">
+          <h2>Delivery</h2>
+          <p>Usually within 3–5 working days (Monday to Friday, excluding UK bank holidays).</p>
+          <p>Free UK delivery. Estimated arrival is 2–4 working days after dispatch.</p>
+          <p>Tracking details will be sent when available.</p>
+        </div>
+
+        <div class="order-detail-card">
+          <h2>Contact details</h2>
+          {customerEmail && <p>Email: <a href={`mailto:${customerEmail}`}>{customerEmail}</a></p>}
+          {customerPhone && <p>Phone: {customerPhone}</p>}
+          <p>
+            Need help? Email <a href={`mailto:${supportEmail}`}>{supportEmail}</a> and include your order number.
+          </p>
+        </div>
+      </section>
+    )}
+  </main>
+</SiteLayout>
+
+<script is:inline>
+  const clearCartAfterPaidOrder = () => {
+    const paidOrder = document.querySelector('[data-payment-status="paid"]');
+    if (!paidOrder || paidOrder.dataset.cartCleared === "true") return;
+
+    localStorage.setItem("wemakekidsclub-cart", "[]");
+    window.dispatchEvent(new Event("wmkc:cart-updated"));
+    paidOrder.dataset.cartCleared = "true";
+  };
+
+  clearCartAfterPaidOrder();
+  document.addEventListener("astro:page-load", clearCartAfterPaidOrder);
+</script>

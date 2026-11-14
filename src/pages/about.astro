@@ -1,23 +1,13 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
+import SiteLayout from "../layouts/SiteLayout.astro";
 import Page from "../../tina/pages/Page";
 import client from "../../tina/__generated__/client";
 const data = await client.queries.page({ relativePath: "about.mdx" });
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead
-      title={data.data.page.seoTitle}
-      description={data.data.page.seoDescription}
-    />
-  </head>
-  <body>
-    <Header />
-    <Page {...data} client:tina />
-    <Footer />
-  </body>
-</html>
+<SiteLayout
+  title={data.data.page.seoTitle}
+  description={data.data.page.seoDescription}
+>
+  <Page {...data} client:tina />
+</SiteLayout>
