@@ -14,7 +14,7 @@ Environment Variables):
 | `STRIPE_SECRET_KEY` | Required for Checkout Sessions and to verify the payment status shown on the thank-you page. Use a test-mode key for testing and a live-mode key for real payments. |
 | `STRIPE_WEBHOOK_SECRET` | Required for order confirmation emails. Verifies webhook requests; use a separate `whsec_...` secret for each webhook endpoint and Stripe mode. |
 | `RESEND_API_KEY` | Required for order confirmation emails. Authenticates SMTP sending through Resend. |
-| `SEND_EMAIL_FROM` | Required for order confirmation emails. Sender address, for example `We Make Kids Club <orders@wemakekidsclub.com>`. The domain must be verified in Resend. |
+| `SEND_EMAIL_FROM` | Required for order confirmation emails. Sender address, for example `Eco-Fashion Lab <orders@wemakekidsclub.com>`. The domain must be verified in Resend. |
 
 `SITE_URL` is optional. The checkout route defaults to
 `https://wemakekidsclub.com`. Set it when testing a deployment on another

@@ -4,9 +4,6 @@
 import "../styles/global.css";
 import "../styles/store.css";
 import { ClientRouter } from "astro:transitions";
-import "@fontsource/cherry-bomb-one";
-import "@fontsource/poppins/400.css";
-import "@fontsource/poppins/700.css";
 
 interface Props {
   title: string;
@@ -54,6 +51,12 @@ const { title, description, image = "/wemakekidsclub.png" } = Astro.props;
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta name="generator" content={Astro.generator} />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=optional"
+/>
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
