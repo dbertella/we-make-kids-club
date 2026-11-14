@@ -2,30 +2,44 @@
 import HeaderLink from "./HeaderLink.astro";
 import config from "../content/config/config.json";
 import IconLink from "./react/IconLink";
+import ReactIcon from "./react/icon";
 ---
 
 <header>
-  <nav>
+  <nav aria-label="Main navigation">
     <h2>
       <a href="/">
         <img class="logo" src="/logo.svg" alt="We Make Kids Club Logo" />
       </a>
     </h2>
-    <button id="menu" aria-label="Open Menu" class="burger">
-      <svg
-        width="32px"
-        height="32px"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
+    <div class="mobile-actions">
+      <a class="icon-link cart-link mobile-cart-link" href="/store/cart" aria-label="Shopping cart, 0 items">
+        <span class="sr-only">Shopping cart</span>
+        <ReactIcon iconName="TbShoppingCart" />
+        <span class="cart-count" aria-live="polite" hidden>0</span>
+      </a>
+      <button
+        id="menu"
+        aria-label="Open Menu"
+        aria-controls="primary-navigation"
+        aria-expanded="false"
+        class="burger"
       >
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M4 5C3.44772 5 3 5.44772 3 6C3 6.55228 3.44772 7 4 7H20C20.5523 7 21 6.55228 21 6C21 5.44772 20.5523 5 20 5H4ZM7 12C7 11.4477 7.44772 11 8 11H20C20.5523 11 21 11.4477 21 12C21 12.5523 20.5523 13 20 13H8C7.44772 13 7 12.5523 7 12ZM13 18C13 17.4477 13.4477 17 14 17H20C20.5523 17 21 17.4477 21 18C21 18.5523 20.5523 19 20 19H14C13.4477 19 13 18.5523 13 18Z"
-          fill="currentColor"></path>
-      </svg>
-    </button>
-    <div class="navbar">
+        <svg
+          width="32px"
+          height="32px"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M4 5C3.44772 5 3 5.44772 3 6C3 6.55228 3.44772 7 4 7H20C20.5523 7 21 6.55228 21 6C21 5.44772 20.5523 5 20 5H4ZM7 12C7 11.4477 7.44772 11 8 11H20C20.5523 11 21 11.4477 21 12C21 12.5523 20.5523 13 20 13H8C7.44772 13 7 12.5523 7 12ZM13 18C13 17.4477 13.4477 17 14 17H20C20.5523 17 21 17.4477 21 18C21 18.5523 20.5523 19 20 19H14C13.4477 19 13 18.5523 13 18Z"
+            fill="currentColor"></path>
+        </svg>
+      </button>
+    </div>
+    <div id="primary-navigation" class="navbar">
       <button id="menu-close" aria-label="Close Menu" class="burger top-right">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -51,18 +65,65 @@ import IconLink from "./react/IconLink";
             return <IconLink {...link} />;
           })
         }
+        <a class="icon-link cart-link" href="/store/cart" aria-label="Shopping cart, 0 items">
+          <span class="sr-only">Shopping cart</span>
+          <ReactIcon iconName="TbShoppingCart" />
+          <span class="cart-count" aria-live="polite" hidden>0</span>
+        </a>
       </div>
     </div>
   </nav>
 </header>
 
 <script is:inline>
-  document.addEventListener("astro:page-load", () => {
-    document.getElementById("menu")?.addEventListener("click", () => {
-      document.querySelector(".navbar")?.classList?.add("show");
+  const updateHeaderCart = () => {
+    let count = 0;
+    try {
+      const cart = JSON.parse(localStorage.getItem("wemakekidsclub-cart") || "[]");
+      count = Array.isArray(cart) ? cart.length : 0;
+    } catch {}
+
+    document.querySelectorAll(".cart-link").forEach((cartLink) => {
+      const countElement = cartLink.querySelector(".cart-count");
+      if (!(countElement instanceof HTMLElement)) return;
+
+      countElement.textContent = String(count);
+      countElement.hidden = count === 0;
+      cartLink.setAttribute("aria-label", `Shopping cart, ${count} ${count === 1 ? "item" : "items"}`);
     });
-    document.getElementById("menu-close")?.addEventListener("click", () => {
-      document.querySelector(".navbar")?.classList?.remove("show");
+  };
+
+  updateHeaderCart();
+  window.addEventListener("wmkc:cart-updated", updateHeaderCart);
+  window.addEventListener("storage", updateHeaderCart);
+
+  document.addEventListener("astro:page-load", () => {
+    updateHeaderCart();
+    const menuButton = document.getElementById("menu");
+    const closeButton = document.getElementById("menu-close");
+    const navbar = document.getElementById("primary-navigation");
+    if (!menuButton || !closeButton || !navbar) return;
+
+    const closeMenu = () => {
+      navbar.classList.remove("show");
+      menuButton.setAttribute("aria-expanded", "false");
+      menuButton.focus();
+    };
+
+    menuButton.addEventListener("click", () => {
+      navbar.classList.add("show");
+      menuButton.setAttribute("aria-expanded", "true");
+      closeButton.focus();
+    });
+    closeButton.addEventListener("click", closeMenu);
+    navbar.querySelectorAll(".internal-links a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navbar.classList.remove("show");
+        menuButton.setAttribute("aria-expanded", "false");
+      });
+    });
+    navbar.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && navbar.classList.contains("show")) closeMenu();
     });
   });
 </script>
@@ -83,15 +144,21 @@ import IconLink from "./react/IconLink";
     text-decoration: none;
   }
   nav {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 0.75rem;
+    max-width: 1280px;
+    min-height: 5rem;
+    margin: 0 auto;
   }
   nav a {
-    padding: 1em 0.5em;
+    padding: 0.75em 0.5em;
     color: var(--primary);
     border-bottom: 4px solid transparent;
     text-decoration: none;
+    font-size: 0.95rem;
   }
   nav a.active {
     text-decoration: none;
@@ -102,6 +169,58 @@ import IconLink from "./react/IconLink";
     flex: 1;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+  }
+
+  .internal-links {
+    display: flex;
+    align-items: center;
+    gap: 0.1rem;
+  }
+
+  .navbar .social-links {
+    align-items: center;
+    margin-top: 0;
+  }
+
+  .navbar .social-links a.cart-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    border-bottom: 0;
+    color: var(--secondary);
+    transition: color 0.2s ease;
+  }
+
+  .navbar .social-links a.cart-link :global(svg) {
+    width: 32px;
+    height: 32px;
+  }
+
+  .navbar .social-links a.cart-link:hover,
+  .navbar .social-links a.cart-link:focus-visible {
+    color: var(--primary);
+  }
+
+  .cart-count {
+    position: absolute;
+    top: -0.65rem;
+    right: -0.4rem;
+    display: inline-grid;
+    min-width: 1rem;
+    height: 1rem;
+    place-items: center;
+    border-radius: 50%;
+    padding: 0 0.1rem;
+    background: var(--primary);
+    color: white;
+    font-size: 0.7rem;
+    line-height: 1;
+  }
+
+  .cart-count[hidden] {
+    display: none;
   }
 
   .burger {
@@ -112,14 +231,64 @@ import IconLink from "./react/IconLink";
     color: var(--secondary);
   }
 
+  .mobile-actions {
+    display: none;
+  }
+
+  .mobile-cart-link {
+    display: none;
+  }
+
   .top-right {
     position: absolute;
     top: 0;
     right: 0;
   }
   @media (max-width: 720px) {
+    .mobile-actions {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      display: flex;
+      flex: 0 0 auto;
+      align-items: center;
+      gap: 0.75rem;
+      transform: translateY(-50%);
+    }
+
+    .mobile-cart-link {
+      box-sizing: border-box;
+      position: relative;
+      display: inline-flex;
+      width: 2.75rem;
+      height: 2.75rem;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border-bottom: 0;
+      color: var(--secondary);
+    }
+
+    .mobile-cart-link :global(svg) {
+      width: 32px;
+      height: 32px;
+    }
+
+    .mobile-cart-link .cart-count {
+      top: 0;
+      right: 0;
+    }
+
     .burger {
       display: block;
+      flex: 0 0 2.75rem;
+      width: 2.75rem;
+      height: 2.75rem;
+      padding: 0;
+    }
+    .navbar .top-right {
+      top: 0;
+      transform: none;
     }
     .navbar {
       display: none;
@@ -127,13 +296,13 @@ import IconLink from "./react/IconLink";
       top: 0;
       bottom: 0;
       right: 0;
-      width: 320px;
+      z-index: 20;
+      width: min(320px, 100vw);
       flex-direction: column;
       background-color: var(--background-cream);
       box-shadow: var(--box-shadow);
       &.show {
         display: flex;
-        z-index: 1;
       }
     }
     .social-links {
@@ -142,11 +311,12 @@ import IconLink from "./react/IconLink";
     .internal-links {
       display: flex;
       flex-direction: column;
+      align-items: stretch;
       justify-content: center;
       flex: 1;
     }
     nav a {
-      font-size: 1.5rem;
+      font-size: 1.25rem;
     }
     nav a.active {
       border-bottom: 4px solid transparent;

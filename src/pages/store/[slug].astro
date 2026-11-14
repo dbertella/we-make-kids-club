@@ -1,0 +1,46 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import ProductDetailPage from "../../components/ProductDetailPage";
+import client from "../../../tina/__generated__/client";
+import { toProduct } from "../../data/products";
+
+export async function getStaticPaths() {
+  const productEntries = await getCollection("products");
+  const products = productEntries.map((entry: CollectionEntry<"products">) =>
+    toProduct({ ...entry.data, slug: entry.id }),
+  );
+
+  return productEntries.map((entry: CollectionEntry<"products">, index: number) => {
+    const product = products[index];
+
+    return {
+      params: { slug: entry.id },
+      props: {
+        product,
+        products,
+        getTinaProps: async () =>
+          client.queries.products({
+            relativePath: entry.data.tinaInfo.relativePath,
+          }),
+      },
+    };
+  });
+}
+
+const { product, products, getTinaProps } = Astro.props;
+const tinaProps = await getTinaProps();
+---
+
+<SiteLayout
+  title={`${product.name} | We Make Kids Club`}
+  description={product.shortDescription}
+  image={product.image}
+>
+  <ProductDetailPage
+    {...tinaProps}
+    products={products}
+    productSlug={product.slug}
+    client:load
+  />
+</SiteLayout>

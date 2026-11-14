@@ -10,6 +10,10 @@
   --orange: 251, 176, 64;
   --yellow: 255, 221, 89;
   --background-cream: #faf6f1;
+  --surface: #fff;
+  --border: #e1e6df;
+  --text-muted: #626262;
+  --error: #a32121;
   --primary-font: "Poppins", serif;
   --header-font: "Cherry Bomb One", serif;
   --black: 15, 18, 25;
@@ -43,7 +47,7 @@ body {
   word-wrap: break-word;
   overflow-wrap: break-word;
   color: rgb(var(--gray-dark));
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1.7;
   min-height: 100vh;
 }
@@ -81,12 +85,14 @@ main {
   max-width: calc(100% - 2rem);
   margin: auto;
   padding: 3rem 1rem;
+  box-sizing: border-box;
 }
 
 article {
   width: 720px;
   max-width: 100%;
   margin: auto;
+  box-sizing: border-box;
   h1 {
     font-size: 2.52rem;
     font-family: var(--header-font);
@@ -96,6 +102,25 @@ article {
     text-align: center;
     margin-bottom: 3rem;
   }
+}
+
+.prose {
+  color: rgb(var(--gray-dark));
+  line-height: 1.7;
+}
+
+.prose img {
+  display: block;
+  height: auto;
+  margin: 1.5rem auto;
+}
+
+.article-hero-image {
+  display: block;
+  width: 100%;
+  max-height: 510px;
+  margin: 0 auto 2rem;
+  object-fit: cover;
 }
 
 h1,
@@ -137,7 +162,25 @@ a {
   color: var(--secondary);
 }
 a:hover {
-  color: var(--black);
+  color: rgb(var(--black));
+}
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--secondary);
+  outline-offset: 3px;
+}
+.store-back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--secondary);
+  text-decoration: none;
+}
+.store-back-link:hover {
+  color: rgb(var(--black));
+  text-decoration: underline;
 }
 p {
   margin-bottom: 1rem;
@@ -227,12 +270,12 @@ hr {
   text-align: center;
   h1 {
     color: var(--secondary);
-    font-size: 3.6rem;
+    font-size: clamp(2.2rem, 8vw, 3.6rem);
     margin: 0;
   }
   h2 {
     color: var(--primary);
-    font-size: 2rem;
+    font-size: clamp(1.25rem, 4vw, 2rem);
     margin: 0.5rem 0 1.5rem;
   }
 }
@@ -297,7 +340,7 @@ hr {
   color: #fff;
   text-decoration: none;
   font-weight: 800;
-  font-size: 1.5rem;
+  font-size: clamp(1rem, 4vw, 1.5rem);
   border-radius: 5px;
   transition: all 0.3s ease;
   border: none;
@@ -343,7 +386,7 @@ hr {
     font-size: 18px;
   }
   main {
-    padding: 1rem;
+    padding: 2rem 1rem;
   }
   body::before {
     top: 60%;
@@ -370,8 +413,13 @@ hr {
 }
 
 @media (prefers-reduced-motion) {
-  :root {
-    --scale: 0;
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
