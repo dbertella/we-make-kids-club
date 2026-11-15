@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
 import { tinaField, useTina } from "tinacms/dist/react";
 import type { ProductsQuery, ProductsQueryVariables } from "../../tina/__generated__/types";
@@ -40,6 +40,8 @@ export default function ProductDetailPage(props: ProductDetailPageProps) {
     };
   }, [productContent, props.productSlug, props.products]);
   const [quantity, setQuantity] = useState(0);
+  const purchaseSentinelRef = useRef<HTMLDivElement>(null);
+  const [showStickyBackground, setShowStickyBackground] = useState(false);
 
   useEffect(() => {
     const syncCart = () =>
@@ -52,6 +54,35 @@ export default function ProductDetailPage(props: ProductDetailPageProps) {
       window.removeEventListener("storage", syncCart);
     };
   }, [product.id, products]);
+
+  useEffect(() => {
+    const sentinel = purchaseSentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setShowStickyBackground(!entry.isIntersecting);
+    });
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, []);
+
+  const renderAddToCartButton = () => (
+    <button
+      className="product-detail-add-button"
+      type="button"
+      onClick={() => writeCart([...readCart(products), product])}
+      aria-label={`Add ${product.name} to cart${quantity ? `, ${quantity} currently in cart` : ""}`}
+    >
+      <span>Add to cart</span>
+      <span
+        className="product-add-price"
+        data-tina-field={tinaField(productContent, "price")}
+      >
+        {formatPrice(product.price)}
+      </span>
+      {quantity > 0 && <span className="product-cart-count">{quantity}</span>}
+    </button>
+  );
 
   return (
     <main className="product-detail">
@@ -71,23 +102,12 @@ export default function ProductDetailPage(props: ProductDetailPageProps) {
             <TinaMarkdown content={product.body} />
           ) : null}
         </div>
-        <footer className="product-purchase">
-          <button
-            className="product-detail-add-button"
-            type="button"
-            onClick={() => writeCart([...readCart(products), product])}
-            aria-label={`Add ${product.name} to cart${quantity ? `, ${quantity} currently in cart` : ""}`}
-          >
-            <span>Add to cart</span>
-            <span
-              className="product-add-price"
-              data-tina-field={tinaField(productContent, "price")}
-            >
-              {formatPrice(product.price)}
-            </span>
-            {quantity > 0 && <span className="product-cart-count">{quantity}</span>}
-          </button>
+        <footer
+          className={`product-purchase product-purchase--sticky${showStickyBackground ? " product-purchase--stuck" : ""}`}
+        >
+          {renderAddToCartButton()}
         </footer>
+        <div ref={purchaseSentinelRef} className="product-purchase-sentinel" aria-hidden="true" />
       </article>
     </main>
   );
