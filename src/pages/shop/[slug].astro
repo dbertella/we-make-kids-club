@@ -33,8 +33,8 @@ const tinaProps = await getTinaProps();
 ---
 
 <SiteLayout
-  title={`${product.name} | We Make Kids Club`}
-  description={product.shortDescription}
+  title={product.seoTitle || `${product.name} | We Make Kids Club`}
+  description={product.seoDescription || product.shortDescription}
   image={product.image}
 >
   <ProductDetailPage

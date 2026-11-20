@@ -35,6 +35,19 @@ export const ProductsCollection: Collection = {
       },
     },
     {
+      name: "seoTitle",
+      label: "SEO title",
+      type: "string",
+    },
+    {
+      name: "seoDescription",
+      label: "SEO description",
+      type: "string",
+      ui: {
+        component: "textarea",
+      },
+    },
+    {
       name: "price",
       label: "Price (in pence)",
       type: "number",
