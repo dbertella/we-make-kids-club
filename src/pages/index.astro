@@ -1,13 +1,22 @@
 ---
+import { getCollection, type CollectionEntry } from "astro:content";
 import SiteLayout from "../layouts/SiteLayout.astro";
+import "../styles/homepage.css";
 import client from "../../tina/__generated__/client";
 import HomePage from "../../tina/pages/HomePage.tsx";
+import { toProduct } from "../data/products";
+
 const data = await client.queries.page({ relativePath: "home.mdx" });
+const products = (await getCollection("products"))
+  .map((entry: CollectionEntry<"products">) =>
+    toProduct({ ...entry.data, slug: entry.id }),
+  )
+  .sort((a, b) => a.name.localeCompare(b.name));
 ---
 
 <SiteLayout
   title={data.data.page.seoTitle}
   description={data.data.page.seoDescription}
 >
-  <HomePage {...data} client:tina />
+  <HomePage products={products} />
 </SiteLayout>

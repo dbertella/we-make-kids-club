@@ -3,19 +3,34 @@ import HeaderLink from "./HeaderLink.astro";
 import config from "../content/config/config.json";
 import IconLink from "./react/IconLink";
 import ReactIcon from "./react/icon";
+
+const isHomepage = Astro.url.pathname === "/";
+const navItems = isHomepage
+  ? [
+      { title: "home", link: "/" },
+      { title: "workshops", link: "/workshops" },
+      { title: "shop", link: "#kits" },
+      { title: "about", link: "#about" },
+      { title: "contact", link: "mailto:wemakekidsclub@gmail.com" },
+    ]
+  : config.nav;
 ---
 
-<header>
+<header class={isHomepage ? "homepage-site-header" : undefined}>
   <nav aria-label="Main navigation">
     <h2>
       <a href="/">
-        <img class="logo" src="/logo.svg" alt="Eco-Fashion Lab" />
+        <img class="logo" src="/logo.png" alt="Eco-Fashion Lab" />
       </a>
     </h2>
     <div class="mobile-actions">
       <a class="icon-link cart-link mobile-cart-link" href="/store/cart" aria-label="Shopping cart, 0 items">
         <span class="sr-only">Shopping cart</span>
-        <ReactIcon iconName="TbShoppingCart" />
+        {isHomepage ? (
+          <img class="home-cart-icon" src="/cart.png" alt="" aria-hidden="true" />
+        ) : (
+          <ReactIcon iconName="TbShoppingCart" />
+        )}
         <span class="cart-count" aria-live="polite" hidden>0</span>
       </a>
       <button
@@ -54,9 +69,13 @@ import ReactIcon from "./react/icon";
       </button>
       <div class="internal-links">
         {
-          config.nav.map((nav) => (
-            <HeaderLink href={nav.link}>{nav.title}</HeaderLink>
-          ))
+          navItems.map((nav) =>
+            isHomepage && nav.link.startsWith("mailto:") ? (
+              <a href={nav.link}>{nav.title}</a>
+            ) : (
+              <HeaderLink href={nav.link}>{nav.title}</HeaderLink>
+            ),
+          )
         }
       </div>
       <div class="social-links">
@@ -67,7 +86,11 @@ import ReactIcon from "./react/icon";
         }
         <a class="icon-link cart-link" href="/store/cart" aria-label="Shopping cart, 0 items">
           <span class="sr-only">Shopping cart</span>
-          <ReactIcon iconName="TbShoppingCart" />
+          {isHomepage ? (
+            <img class="home-cart-icon" src="/cart.png" alt="" aria-hidden="true" />
+          ) : (
+            <ReactIcon iconName="TbShoppingCart" />
+          )}
           <span class="cart-count" aria-live="polite" hidden>0</span>
         </a>
       </div>
@@ -133,6 +156,48 @@ import ReactIcon from "./react/icon";
     padding: 0 1em;
     background: white;
     box-shadow: 0 2px 8px rgba(var(--black), 5%);
+  }
+  .homepage-site-header {
+    padding: 2.5rem 2rem 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  .homepage-site-header nav {
+    max-width: 1200px;
+    min-height: 4rem;
+    gap: 3rem;
+  }
+  .homepage-site-header .logo {
+    width: 5rem;
+  }
+  .homepage-site-header nav a {
+    padding: 0.5rem 0.4rem;
+    border-bottom: 0;
+    font-size: 0.9rem;
+  }
+  .homepage-site-header nav a.active {
+    border-bottom: 0;
+    font-weight: 400;
+  }
+  .homepage-site-header .internal-links {
+    gap: clamp(0.25rem, 1.8vw, 1.5rem);
+  }
+  .homepage-site-header .navbar .social-links {
+    gap: 0.65rem;
+  }
+  .homepage-site-header .navbar .social-links :global(svg) {
+    width: 1rem;
+    height: 1rem;
+  }
+  .homepage-site-header .navbar .social-links .home-cart-icon {
+    display: block;
+    width: 1rem;
+    height: 1rem;
+  }
+  .homepage-site-header .mobile-cart-link .home-cart-icon {
+    display: block;
+    width: 1.25rem;
+    height: 1.25rem;
   }
   h2 {
     margin: 0;
@@ -245,6 +310,10 @@ import ReactIcon from "./react/icon";
     right: 0;
   }
   @media (max-width: 720px) {
+    .homepage-site-header {
+      padding: 0.75rem 1rem 0;
+    }
+
     .mobile-actions {
       position: absolute;
       top: 50%;

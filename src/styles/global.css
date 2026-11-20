@@ -25,6 +25,10 @@
     0 8px 24px rgba(var(--gray), 20%), 0 16px 32px rgba(var(--gray), 15%);
 }
 
+html {
+  font-size: 110%;
+}
+
 @keyframes fadeOut {
   0% {
     opacity: 0.3;
@@ -47,7 +51,7 @@ body {
   word-wrap: break-word;
   overflow-wrap: break-word;
   color: rgb(var(--gray-dark));
-  font-size: 18px;
+  font-size: 1.125rem;
   line-height: 1.7;
   min-height: 100vh;
 }
@@ -94,7 +98,7 @@ article {
   margin: auto;
   box-sizing: border-box;
   h1 {
-    font-size: clamp(2rem, 6vw, 3rem);
+    font-size: clamp(2rem, 6.6vw, 3rem);
     font-family: var(--header-font);
     font-weight: 400;
     font-style: normal;
@@ -136,7 +140,7 @@ h6 {
   line-height: 1.2;
 }
 h1 {
-  font-size: clamp(2rem, 6vw, 3rem);
+  font-size: clamp(2rem, 6.6vw, 3rem);
   font-weight: 700;
   color: var(--secondary);
   text-align: center;
@@ -188,10 +192,10 @@ p {
 
 textarea {
   width: 100%;
-  font-size: 16px;
+  font-size: 1rem;
 }
 input {
-  font-size: 16px;
+  font-size: 1rem;
 }
 table {
   width: 100%;
@@ -270,13 +274,14 @@ hr {
   text-align: center;
   h1 {
     color: var(--secondary);
-    font-size: clamp(2.2rem, 8vw, 3.6rem);
-    font-weight: 700;
+    font-family: "Fascinate", serif;
+    font-size: clamp(2.2rem, 8.8vw, 3.6rem);
+    font-weight: 400;
     margin: 0;
   }
   h2 {
     color: var(--text-muted);
-    font-size: clamp(1.25rem, 4vw, 2rem);
+    font-size: clamp(1.25rem, 4.4vw, 2rem);
     font-family: var(--primary-font);
     font-weight: 400;
     margin: 0.5rem 0 1.5rem;
@@ -343,7 +348,7 @@ hr {
   color: #fff;
   text-decoration: none;
   font-weight: 700;
-  font-size: clamp(1rem, 4vw, 1.25rem);
+  font-size: clamp(1rem, 4.4vw, 1.25rem);
   border-radius: 8px;
   transition: all 0.3s ease;
   border: none;
@@ -385,7 +390,7 @@ hr {
 
 @media (max-width: 768px) {
   body {
-    font-size: 18px;
+    font-size: 1.125rem;
   }
   main {
     padding: 2rem 1rem;
@@ -412,6 +417,72 @@ hr {
     flex-direction: column;
     text-align: center;
   }
+}
+
+body.workshops-page::before,
+body.workshops-page::after {
+  display: none;
+}
+
+body.workshops-page main {
+  width: 720px;
+  max-width: calc(100% - 2rem);
+  padding: 2rem 1rem 4rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+body.workshops-page main > h1 {
+  margin: 0 0 1.5rem;
+  color: var(--primary);
+  font-family: "Fascinate", serif;
+  font-size: clamp(2.2rem, 7.7vw, 3rem);
+  font-weight: 400;
+  line-height: 1.1;
+  text-transform: lowercase;
+}
+
+body.workshops-page main section > div > h2 {
+  margin: 3rem 0 1.25rem;
+  color: var(--secondary);
+  font-size: clamp(1.5rem, 4.4vw, 1.75rem);
+  line-height: 1.2;
+}
+
+body.workshops-page main section > div > h3 {
+  margin: 0 0 0.75rem;
+  color: var(--primary);
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+body.workshops-page main section > div > p {
+  margin: 0 0 0.8rem;
+}
+
+body.workshops-page main section > div > ul {
+  margin: 0.25rem 0 1rem;
+  padding-left: 1.25rem;
+}
+
+body.workshops-page .news-cta {
+  align-items: flex-start;
+  margin: 1.5rem 0 1rem;
+}
+
+body.workshops-page .button {
+  padding: 1rem 1.5rem;
+  border-radius: 999px;
+  background-color: var(--secondary);
+  box-shadow: none;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+body.workshops-page .button:hover {
+  background-color: var(--primary);
+  box-shadow: none;
 }
 
 @media (prefers-reduced-motion) {

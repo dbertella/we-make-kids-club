@@ -1,4 +1,8 @@
 {
+  "storeSEO": {
+    "seoTitle": "Eco-Friendly Crafts & Workshops Store | Eco-Fashion Lab",
+    "seoDescription": "Shop eco-friendly craft kits and workshops for kids from Eco-Fashion Lab."
+  },
   "seo": {
     "title": "Eco-Fashion Lab | Craft Ideas for Kids & Events in E11",
     "description": "Get inspired with craft ideas for kids age 2-11 and stay tuned for the latest events in East London for little eco-friendly warriors. ",
@@ -12,6 +16,10 @@
     {
       "title": "About",
       "link": "/about"
+    },
+    {
+      "title": "Workshops",
+      "link": "/workshops"
     },
     {
       "title": "For Schools",

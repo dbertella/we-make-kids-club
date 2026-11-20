@@ -62,6 +62,8 @@ const products = defineCollection({
     }),
     productId: z.string(),
     name: z.string(),
+    seoTitle: z.string(),
+    seoDescription: z.string(),
     shortDescription: z.string(),
     price: z.number(),
     image: z.string(),

@@ -15,7 +15,7 @@
   margin-bottom: 0.5rem;
   color: var(--secondary);
   font-family: var(--header-font);
-  font-size: clamp(2rem, 6vw, 3rem);
+  font-size: clamp(2rem, 6.6vw, 3rem);
 }
 
 .store-heading p,

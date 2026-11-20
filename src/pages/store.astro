@@ -3,6 +3,7 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import SiteLayout from "../layouts/SiteLayout.astro";
 import StorePage from "../components/StorePage.tsx";
 import { toProduct } from "../data/products";
+import config from "../content/config/config.json";
 
 const products = (await getCollection("products")).map(
   (entry: CollectionEntry<"products">) =>
@@ -11,8 +12,8 @@ const products = (await getCollection("products")).map(
 ---
 
 <SiteLayout
-  title="Eco-Friendly Crafts & Workshops Store | Eco-Fashion Lab"
-  description="Shop eco-friendly craft kits and workshops for kids from Eco-Fashion Lab."
+  title={config.storeSEO.seoTitle}
+  description={config.storeSEO.seoDescription}
 >
   <StorePage products={products} client:load />
 </SiteLayout>

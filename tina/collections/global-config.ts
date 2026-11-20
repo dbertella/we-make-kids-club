@@ -14,6 +14,28 @@ export const GlobalConfigCollection: Collection = {
   },
   fields: [
     {
+      name: "storeSEO",
+      label: "Store page SEO",
+      type: "object",
+      fields: [
+        {
+          name: "seoTitle",
+          label: "SEO title",
+          type: "string",
+          required: true,
+        },
+        {
+          name: "seoDescription",
+          label: "Meta description",
+          type: "string",
+          required: true,
+          ui: {
+            component: "textarea",
+          },
+        },
+      ],
+    },
+    {
       name: "seo",
       label: "General site config",
       type: "object",

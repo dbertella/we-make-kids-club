@@ -26,6 +26,21 @@ export const ProductsCollection: Collection = {
       isTitle: true,
     },
     {
+      name: "seoTitle",
+      label: "SEO title",
+      type: "string",
+      required: true,
+    },
+    {
+      name: "seoDescription",
+      label: "Meta description",
+      type: "string",
+      required: true,
+      ui: {
+        component: "textarea",
+      },
+    },
+    {
       name: "shortDescription",
       label: "Short description",
       type: "string",

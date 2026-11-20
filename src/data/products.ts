@@ -4,6 +4,8 @@ export interface Product {
   id: string;
   slug: string;
   name: string;
+  seoTitle: string;
+  seoDescription: string;
   shortDescription: string;
   price: number;
   image: string;

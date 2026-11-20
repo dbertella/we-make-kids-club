@@ -29,7 +29,7 @@ export default function ProductDetailPage(props: ProductDetailPageProps) {
   const { product, products } = useMemo(() => {
     const product = toProduct({
       ...productContent,
-      shortDescription: productContent.description,
+      shortDescription: productContent.shortDescription,
       slug: props.productSlug,
     });
     return {

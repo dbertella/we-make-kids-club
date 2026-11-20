@@ -10,6 +10,12 @@ interface Props {
 }
 
 const { title, description, image } = Astro.props;
+const bodyClass =
+  Astro.url.pathname === "/"
+    ? "homepage"
+    : Astro.url.pathname.replace(/\/$/, "") === "/workshops"
+      ? "workshops-page"
+      : undefined;
 ---
 
 <!doctype html>
@@ -17,7 +23,7 @@ const { title, description, image } = Astro.props;
   <head>
     <BaseHead title={title} description={description} image={image} />
   </head>
-  <body>
+  <body class={bodyClass}>
     <Header />
     <slot />
     <Footer />
