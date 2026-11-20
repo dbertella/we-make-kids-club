@@ -31,7 +31,8 @@ if (sessionId && hasSessionAccess) {
   }
 }
 
-const shippingAddress = order?.shipping_details?.address ?? order?.customer_details?.address;
+const shippingAddress =
+  order?.shipping_details?.address ?? order?.customer_details?.address;
 const addressLines = shippingAddress
   ? [
       shippingAddress.line1,
@@ -42,7 +43,8 @@ const addressLines = shippingAddress
       shippingAddress.country,
     ].filter((line): line is string => Boolean(line))
   : [];
-const customerName = order?.shipping_details?.name ?? order?.customer_details?.name;
+const customerName =
+  order?.shipping_details?.name ?? order?.customer_details?.name;
 const customerEmail = order?.customer_details?.email ?? order?.customer_email;
 const customerPhone = order?.customer_details?.phone;
 const supportEmail = "wemakekidsclub@gmail.com";
@@ -54,12 +56,28 @@ const formatAmount = (amount: number, currency: string) =>
 ---
 
 <SiteLayout
-  title={isPaid ? "Thank You — We Make Kids Club" : "Payment Not Confirmed — We Make Kids Club"}
-  description={isPaid ? "Your order is confirmed. Thank you for shopping with us." : "We could not confirm your payment. Please contact us or return to the store."}
+  title={
+    isPaid
+      ? "Thank You — We Make Kids Club"
+      : "Payment Not Confirmed — We Make Kids Club"
+  }
+  description={
+    isPaid
+      ? "Your order is confirmed. Thank you for shopping with us."
+      : "We could not confirm your payment. Please contact us or return to the store."
+  }
 >
-  <main class="checkout-result" data-payment-status={isPaid ? "paid" : "unconfirmed"}>
-    <a class="store-back-link" href="/shop">&larr; Back to shop</a>
-    <div class:list={["result-mark", { "result-mark-error": !isPaid }]} aria-hidden="true">
+  <main
+    class="checkout-result"
+    data-payment-status={isPaid ? "paid" : "unconfirmed"}
+  >
+    <a class="store-back-link" href="/shop">
+      &larr; Back to shop
+    </a>
+    <div
+      class:list={["result-mark", { "result-mark-error": !isPaid }]}
+      aria-hidden="true"
+    >
       {isPaid ? "✓" : "!"}
     </div>
     <h1>{isPaid ? "Order confirmed" : "Payment not confirmed"}</h1>
@@ -73,7 +91,9 @@ const formatAmount = (amount: number, currency: string) =>
       <section class="order-details" aria-label="Order details">
         <div class="order-detail-card">
           <h2>Order number</h2>
-          <p class="session-id"><code>{order.id}</code></p>
+          <p class="session-id">
+            <code>{order.id}</code>
+          </p>
         </div>
 
         <div class="order-detail-card">
@@ -83,9 +103,16 @@ const formatAmount = (amount: number, currency: string) =>
               <ul class="order-items">
                 {order.line_items.data.map((item) => (
                   <li>
-                    <span>{item.description ?? "Store item"} × {item.quantity ?? 1}</span>
+                    <span>
+                      {item.description ?? "Store item"} × {item.quantity ?? 1}
+                    </span>
                     {item.amount_total != null && (
-                      <strong>{formatAmount(item.amount_total, order.currency ?? "gbp")}</strong>
+                      <strong>
+                        {formatAmount(
+                          item.amount_total,
+                          order.currency ?? "gbp",
+                        )}
+                      </strong>
                     )}
                   </li>
                 ))}
@@ -93,20 +120,40 @@ const formatAmount = (amount: number, currency: string) =>
               {order.amount_total != null && (
                 <p class="order-total">
                   <span>Total paid</span>
-                  <strong>{formatAmount(order.amount_total, order.currency ?? "gbp")}</strong>
+                  <strong>
+                    {formatAmount(order.amount_total, order.currency ?? "gbp")}
+                  </strong>
                 </p>
               )}
             </>
           ) : (
-            <p>See your confirmation email for the items in your order.</p>
+            <p>S </p>
           )}
         </div>
 
         <div class="order-detail-card">
-          <h2>Delivery address</h2>
+          <h2>Customer information</h2>
           {customerName && <p>{customerName}</p>}
+          {customerEmail && (
+            <p>
+              Email: <a href={`mailto:${customerEmail}`}>{customerEmail}</a>
+            </p>
+          )}
+          {customerPhone && <p>Phone: {customerPhone}</p>}
+<<<<<<< HEAD
+          <h3>Delivery address</h3>
+=======
+          <strong>Shipping address</strong>
+>>>>>>> 85132de (Update thank you page)
           {addressLines.length ? (
-            <address>{addressLines.map((line) => <span>{line}<br /></span>)}</address>
+            <address>
+              {addressLines.map((line) => (
+                <span>
+                  {line}
+                  <br />
+                </span>
+              ))}
+            </address>
           ) : (
             <p>Check your confirmation email for your delivery address.</p>
           )}
@@ -114,16 +161,21 @@ const formatAmount = (amount: number, currency: string) =>
 
         <div class="order-detail-card">
           <h2>Delivery</h2>
-          <p>Usually within 3–5 working days (Monday to Friday, excluding UK bank holidays).</p>
-          <p>Free UK delivery. Estimated arrival is 2–4 working days after dispatch.</p>
+          <p>
+            Usually within 3–5 working days (Monday to Friday, excluding UK bank
+            holidays).
+          </p>
+          <p>
+            Free UK delivery. Estimated arrival is 2–4 working days after
+            dispatch.
+          </p>
         </div>
 
         <div class="order-detail-card">
-          <h2>Contact details</h2>
-          {customerEmail && <p>Email: <a href={`mailto:${customerEmail}`}>{customerEmail}</a></p>}
-          {customerPhone && <p>Phone: {customerPhone}</p>}
           <p>
-            Need help? Email <a href={`mailto:${supportEmail}`}>{supportEmail}</a> and include your order number.
+            Need help? Email{" "}
+            <a href={`mailto:${supportEmail}`}>{supportEmail}</a> and include
+            your order number.
           </p>
         </div>
       </section>
