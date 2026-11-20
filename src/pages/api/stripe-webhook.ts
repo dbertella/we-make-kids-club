@@ -73,6 +73,23 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const currency = session.currency ?? "gbp";
+    const shippingAddress =
+      session.shipping_details?.address ?? session.customer_details?.address;
+    const shippingAddressLines = shippingAddress
+      ? [
+        shippingAddress.line1,
+        shippingAddress.line2,
+        shippingAddress.city,
+        shippingAddress.state,
+        shippingAddress.postal_code,
+        shippingAddress.country,
+      ].filter((line): line is string => Boolean(line))
+      : [];
+    const shippingName =
+      session.shipping_details?.name ?? session.customer_details?.name;
+    const shippingAddressHtml = shippingAddressLines.length
+      ? `<p>${shippingName ? `${escapeHtml(shippingName)}<br>` : ""}${shippingAddressLines.map(escapeHtml).join("<br>")}</p>`
+      : "<p>We couldn't retrieve a shipping address for your order. Please contact us if you need help.</p>";
     const items = session.line_items?.data ?? [];
     const itemRows = items
       .map((item) => {
@@ -82,8 +99,8 @@ export const POST: APIRoute = async ({ request }) => {
         const product = item.price?.product;
         const imageUrl =
           typeof product === "object" &&
-          product !== null &&
-          !("deleted" in product)
+            product !== null &&
+            !("deleted" in product)
             ? product.images.find((image) => image.startsWith("https://"))
             : undefined;
         const image = imageUrl
@@ -109,6 +126,9 @@ export const POST: APIRoute = async ({ request }) => {
             <tfoot><tr><th style="padding-top:12px;text-align:left">Total paid</th><th style="padding-top:12px;text-align:right">${total}</th></tr></tfoot>
           </table>
           <p>Thank you for supporting handmade, low-waste making.</p>
+          <p>Additionally, I kindly ask you to review your email and shipping address below. If anything is missing or incorrect, please do not hesitate to notify me by contacting <a href="mailto:wemakekidsclub@gmail.com">wemakekidsclub@gmail.com</a>.</p>
+          <h2 style="margin-top:24px;color:#2c5f2d">Shipping address</h2>
+          ${shippingAddressHtml}
           <h2 style="margin-top:24px;color:#2c5f2d">Delivery</h2>
           <p>Free UK delivery. Orders are usually dispatched within 3–5 working days (Monday to Friday, excluding UK bank holidays). Estimated delivery is 2–4 working days after dispatch.</p>
           <p style="margin-top:24px">Your payment reference is <strong>${escapeHtml(session.id)}</strong>.</p>
