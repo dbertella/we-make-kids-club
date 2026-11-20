@@ -431,6 +431,8 @@
 
 .checkout-cancelled,
 .checkout-result {
+  box-sizing: border-box;
+  width: 100%;
   max-width: 620px;
   margin: 0 auto;
   padding: 4rem 1.5rem;
@@ -478,10 +480,12 @@
 }
 
 .order-detail-card {
+  min-width: 0;
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1.25rem;
   background: var(--surface);
+  overflow-wrap: anywhere;
 }
 
 .order-detail-card h2 {
@@ -511,13 +515,21 @@
 .order-items li,
 .order-total {
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
   color: var(--text-muted);
 }
 
+.order-items li span,
+.order-total span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .order-items li strong,
 .order-total strong {
+  flex-shrink: 0;
   color: var(--secondary);
   white-space: nowrap;
 }
@@ -567,6 +579,20 @@
   .cart-remove {
     grid-column: 2;
     justify-self: start;
+  }
+
+  .checkout-cancelled,
+  .checkout-result {
+    padding: 2.5rem 1rem;
+  }
+
+  .order-detail-card {
+    padding: 1rem;
+  }
+
+  .order-items li,
+  .order-total {
+    gap: 0.5rem;
   }
 }
 
