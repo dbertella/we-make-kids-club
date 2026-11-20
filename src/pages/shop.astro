@@ -16,5 +16,5 @@ const products = (await getCollection("products")).map(
   title={data.data.page.seoTitle}
   description={data.data.page.seoDescription}
 >
-  <StorePage {...data} products={products} client:tina />
+  <StorePage {...data} products={products} client:load />
 </SiteLayout>
