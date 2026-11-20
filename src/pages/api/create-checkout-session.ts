@@ -97,7 +97,7 @@ export const POST: APIRoute = async ({ request }) => {
         },
       })),
       success_url: `${siteUrl}/thank-you?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${siteUrl}/store/cart`,
+      cancel_url: `${siteUrl}/shop/cart`,
     });
 
     const token = createCheckoutAccessToken(

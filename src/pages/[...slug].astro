@@ -6,7 +6,8 @@ import SiteLayout from "../layouts/SiteLayout.astro";
 
 export async function getStaticPaths() {
   const page = await getCollection("page");
-  return page.map((p) => ({
+  // The shop page uses a dedicated template to render the product listing.
+  return page.filter((p) => p.id !== "shop").map((p) => ({
     params: { slug: p.id },
     props: {
       getTinaProps: async () =>

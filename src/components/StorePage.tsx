@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
+import { TinaMarkdown } from "tinacms/dist/rich-text";
+import { tinaField, useTina } from "tinacms/dist/react";
+import type { PageQuery, PageQueryVariables } from "../../tina/__generated__/types";
 import type { Product } from "../data/products";
 import { readCart, writeCart } from "../utils/cart";
 
 interface StorePageProps {
   products: Product[];
+  variables: PageQueryVariables;
+  data: PageQuery;
+  query: string;
 }
 
 const formatPrice = (priceInPence: number) =>
@@ -12,7 +18,14 @@ const formatPrice = (priceInPence: number) =>
     currency: "GBP",
   });
 
-export default function StorePage({ products }: StorePageProps) {
+export default function StorePage(props: StorePageProps) {
+  const { data } = useTina({
+    query: props.query,
+    variables: props.variables,
+    data: props.data,
+  });
+  const { products } = props;
+  const page = data.page;
   const [cart, setCart] = useState<Product[]>([]);
 
   useEffect(() => {
@@ -29,9 +42,16 @@ export default function StorePage({ products }: StorePageProps) {
   return (
     <main className="store">
       <header className="store-heading">
-        <h1>Eco-fashion kits</h1>
-        <p>Support sustainable kids' activities with every purchase.</p>
+        <h1 data-tina-field={tinaField(page, "title")}>{page.title}</h1>
+        {page.subtitle && (
+          <p data-tina-field={tinaField(page, "subtitle")}>{page.subtitle}</p>
+        )}
       </header>
+      {page.body && (
+        <section className="store-intro" data-tina-field={tinaField(page, "body")}>
+          <TinaMarkdown content={page.body} />
+        </section>
+      )}
 
       <section
         className={`products-grid${products.length === 1 ? " products-grid--single" : ""}`}
@@ -41,12 +61,12 @@ export default function StorePage({ products }: StorePageProps) {
           const quantity = cart.filter((item) => item.id === product.id).length;
           return (
             <article className="product-card" key={product.id}>
-              <a className="product-image-link" href={`/store/${product.slug}`}>
+              <a className="product-image-link" href={`/shop/${product.slug}`}>
                 <img src={product.image} alt={product.name} />
               </a>
               <div className="product-info">
                 <h2>
-                  <a className="product-details-link" href={`/store/${product.slug}`}>
+                  <a className="product-details-link" href={`/shop/${product.slug}`}>
                     {product.name}
                   </a>
                 </h2>

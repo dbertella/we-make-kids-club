@@ -82,7 +82,7 @@ credentials. Stripe webhook secrets are per endpoint.
 
 After the live keys and live webhook secret are configured and redeployed:
 
-1. Visit `/store`, add a product, and check out with a real payment method.
+1. Visit `/shop`, add a product, and check out with a real payment method.
    Live-mode Checkout charges real money.
 2. Confirm Stripe records the payment and the webhook delivery succeeds.
 3. Confirm the thank-you page verifies the payment and the order email arrives.

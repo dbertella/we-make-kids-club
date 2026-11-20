@@ -2,8 +2,10 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 import SiteLayout from "../layouts/SiteLayout.astro";
 import StorePage from "../components/StorePage.tsx";
+import client from "../../tina/__generated__/client";
 import { toProduct } from "../data/products";
 
+const data = await client.queries.page({ relativePath: "shop.mdx" });
 const products = (await getCollection("products")).map(
   (entry: CollectionEntry<"products">) =>
     toProduct({ ...entry.data, slug: entry.id }),
@@ -11,8 +13,8 @@ const products = (await getCollection("products")).map(
 ---
 
 <SiteLayout
-  title="Eco-Friendly Crafts & Workshops Store | We Make Kids Club"
-  description="Shop eco-friendly craft kits and workshops for kids from We Make Kids Club."
+  title={data.data.page.seoTitle}
+  description={data.data.page.seoDescription}
 >
-  <StorePage products={products} client:load />
+  <StorePage {...data} products={products} client:tina />
 </SiteLayout>

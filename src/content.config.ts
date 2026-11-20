@@ -94,6 +94,7 @@ const page = defineCollection({
       relativePath: z.string(),
     }),
     title: z.string(),
+    subtitle: z.string().nullable().optional(),
     seoTitle: z.string(),
     seoDescription: z.string(),
     body: z.any(),

@@ -7,7 +7,7 @@ export const PageCollection: Collection = {
   format: "mdx",
   ui: {
     router: ({ document }) => {
-      return `/${document._sys.filename}`;
+      return `/${document._sys.filename.replace(/\.mdx?$/, "")}`;
     },
   },
   fields: [
@@ -25,6 +25,10 @@ export const PageCollection: Collection = {
       name: "title",
       type: "string",
       required: true,
+    },
+    {
+      name: "subtitle",
+      type: "string",
     },
     {
       name: "body",

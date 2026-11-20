@@ -86,8 +86,8 @@ export default function ProductDetailPage(props: ProductDetailPageProps) {
 
   return (
     <main className="product-detail">
-      <a className="store-back-link" href="/store">
-        &larr; Back to store
+      <a className="store-back-link" href="/shop">
+        &larr; Back to shop
       </a>
       <article className="product-detail-article">
         <h1 data-tina-field={tinaField(productContent, "name")}>{product.name}</h1>

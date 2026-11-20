@@ -58,7 +58,7 @@ const formatAmount = (amount: number, currency: string) =>
   description={isPaid ? "Your order is confirmed. Thank you for shopping with us." : "We could not confirm your payment. Please contact us or return to the store."}
 >
   <main class="checkout-result" data-payment-status={isPaid ? "paid" : "unconfirmed"}>
-    <a class="store-back-link" href="/store">&larr; Back to store</a>
+    <a class="store-back-link" href="/shop">&larr; Back to shop</a>
     <div class:list={["result-mark", { "result-mark-error": !isPaid }]} aria-hidden="true">
       {isPaid ? "✓" : "!"}
     </div>

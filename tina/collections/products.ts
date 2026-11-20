@@ -7,7 +7,7 @@ export const ProductsCollection: Collection = {
   format: "mdx",
   ui: {
     router({ document }) {
-      return `/store/${document._sys.filename}`;
+      return `/shop/${document._sys.filename.replace(/\.mdx?$/, "")}`;
     },
   },
   fields: [

@@ -166,8 +166,8 @@ export default function CartPage({ products }: CartPageProps) {
 
   return (
     <main className="cart-page">
-      <a className="store-back-link" href="/store">
-        &larr; Back to store
+      <a className="store-back-link" href="/shop">
+        &larr; Back to shop
       </a>
       <header className="cart-heading">
         <h1>Your cart</h1>
@@ -178,7 +178,7 @@ export default function CartPage({ products }: CartPageProps) {
         <section className="cart-empty">
           <h2>Your cart is empty</h2>
           <p>Find an eco-fashion kit to get started.</p>
-          <a className="cart-primary-link" href="/store">Browse products</a>
+          <a className="cart-primary-link" href="/shop">Browse products</a>
         </section>
       ) : (
         <section className="cart-content" aria-label="Cart items">
