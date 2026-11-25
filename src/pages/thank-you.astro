@@ -5,6 +5,7 @@ import {
   CHECKOUT_ACCESS_COOKIE,
   verifyCheckoutAccessToken,
 } from "../utils/checkout-session-access";
+import { getOrderReference } from "../utils/order-reference";
 
 export const prerender = false;
 Astro.response.headers.set("Cache-Control", "private, no-store");
@@ -91,9 +92,7 @@ const formatAmount = (amount: number, currency: string) =>
       <section class="order-details" aria-label="Order details">
         <div class="order-detail-card">
           <h2>Order number</h2>
-          <p class="session-id">
-            <code>{order.id}</code>
-          </p>
+          <p>{getOrderReference(order.client_reference_id, order.id)}</p>
         </div>
 
         <div class="order-detail-card">

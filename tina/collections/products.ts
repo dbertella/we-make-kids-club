@@ -19,6 +19,13 @@ export const ProductsCollection: Collection = {
       description: "Keep this ID stable so existing cart items remain valid.",
     },
     {
+      name: "sortOrder",
+      label: "Display order",
+      type: "number",
+      required: true,
+      description: "Products with lower numbers appear first in the shop.",
+    },
+    {
       name: "name",
       label: "Name",
       type: "string",

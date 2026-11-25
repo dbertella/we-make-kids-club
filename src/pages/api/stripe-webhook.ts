@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import Stripe from "stripe";
 import { sendEmail } from "../../utils/emails";
+import { getOrderReference } from "../../utils/order-reference";
 
 export const prerender = false;
 
@@ -73,6 +74,10 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const currency = session.currency ?? "gbp";
+    const orderReference = getOrderReference(
+      session.client_reference_id,
+      session.id,
+    );
     const shippingAddress =
       session.shipping_details?.address ?? session.customer_details?.address;
     const shippingAddressLines = shippingAddress
@@ -131,7 +136,7 @@ export const POST: APIRoute = async ({ request }) => {
           ${shippingAddressHtml}
           <h2 style="margin-top:24px;color:#2c5f2d">Delivery</h2>
           <p>Free UK delivery. Orders are usually dispatched within 3–5 working days (Monday to Friday, excluding UK bank holidays). Estimated delivery is 2–4 working days after dispatch.</p>
-          <p style="margin-top:24px">Your payment reference is <strong>${escapeHtml(session.id)}</strong>.</p>
+          <p style="margin-top:24px">Your order number is <strong>${escapeHtml(orderReference)}</strong>.</p>
           <p>We'll be in touch with any updates about your order.</p>
           <p>We Make Kids Club</p>
         </div>

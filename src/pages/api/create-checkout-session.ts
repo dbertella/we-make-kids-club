@@ -6,6 +6,7 @@ import {
   createCheckoutAccessCookie,
   createCheckoutAccessToken,
 } from '../../utils/checkout-session-access';
+import { createOrderReference } from '../../utils/order-reference';
 
 export const prerender = false;
 
@@ -63,8 +64,14 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const validCatalogItems = Array.from(quantitiesByProduct.values());
+    const orderReference = createOrderReference();
 
     const session = await stripe.checkout.sessions.create({
+      client_reference_id: orderReference,
+      metadata: { order_reference: orderReference },
+      payment_intent_data: {
+        metadata: { order_reference: orderReference },
+      },
       payment_method_types: ['card', 'revolut_pay'],
       mode: 'payment',
       shipping_address_collection: {

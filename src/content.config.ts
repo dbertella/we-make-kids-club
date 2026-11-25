@@ -41,17 +41,23 @@ const products = defineCollection({
   loader: async () => {
     const productsResponse = await client.queries.productsConnection();
 
-    return productsResponse.data.productsConnection.edges
-      ?.filter((product) => !!product)
-      .map((product) => {
+    const products =
+      productsResponse.data.productsConnection.edges?.flatMap((product) => {
         const node = product?.node;
+        if (!node) return [];
 
-        return {
-          ...node,
-          id: node?._sys.relativePath.replace(/\.mdx?$/, ""),
-          tinaInfo: node?._sys,
-        };
-      });
+        return [
+          {
+            ...node,
+            id: node._sys.relativePath.replace(/\.mdx?$/, ""),
+            tinaInfo: node._sys,
+          },
+        ];
+      }) ?? [];
+
+    return products.sort(
+      (a, b) => a.sortOrder - b.sortOrder || a.name.localeCompare(b.name),
+    );
   },
   schema: z.object({
     tinaInfo: z.object({
@@ -61,6 +67,7 @@ const products = defineCollection({
       relativePath: z.string(),
     }),
     productId: z.string(),
+    sortOrder: z.number(),
     name: z.string(),
     shortDescription: z.string(),
     seoTitle: z.string().nullable().optional(),
